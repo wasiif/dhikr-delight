@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus, RotateCcw, Sparkles } from "lucide-react";
 import { TasbihDial } from "@/components/TasbihDial";
+import { CounterSkeleton } from "@/components/Skeletons";
+
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 
@@ -43,13 +45,9 @@ function CounterPage() {
   const complete = state.count >= state.target;
 
   if (!hydrated) {
-    return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 animate-fade-in">
-        <span className="size-16 animate-[pulse_2s_ease-in-out_infinite] rounded-full border-2 border-gold/40" />
-        <p className="text-sm text-muted-foreground">{t.loading}</p>
-      </div>
-    );
+    return <CounterSkeleton />;
   }
+
 
   return (
     <div className="mx-auto max-w-xl space-y-8 animate-fade-in">
