@@ -10,8 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as RoutineRouteImport } from './routes/routine'
-import { Route as NamesRouteImport } from './routes/names'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,16 +17,6 @@ import { Route as IndexRouteImport } from './routes/index'
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoutineRoute = RoutineRouteImport.update({
-  id: '/routine',
-  path: '/routine',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NamesRoute = NamesRouteImport.update({
-  id: '/names',
-  path: '/names',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LibraryRoute = LibraryRouteImport.update({
@@ -51,16 +39,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/library': typeof LibraryRoute
-  '/names': typeof NamesRoute
-  '/routine': typeof RoutineRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/library': typeof LibraryRoute
-  '/names': typeof NamesRoute
-  '/routine': typeof RoutineRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRoutesById {
@@ -68,31 +52,20 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/history': typeof HistoryRoute
   '/library': typeof LibraryRoute
-  '/names': typeof NamesRoute
-  '/routine': typeof RoutineRoute
   '/settings': typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/history' | '/library' | '/names' | '/routine' | '/settings'
+  fullPaths: '/' | '/history' | '/library' | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/history' | '/library' | '/names' | '/routine' | '/settings'
-  id:
-    | '__root__'
-    | '/'
-    | '/history'
-    | '/library'
-    | '/names'
-    | '/routine'
-    | '/settings'
+  to: '/' | '/history' | '/library' | '/settings'
+  id: '__root__' | '/' | '/history' | '/library' | '/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   HistoryRoute: typeof HistoryRoute
   LibraryRoute: typeof LibraryRoute
-  NamesRoute: typeof NamesRoute
-  RoutineRoute: typeof RoutineRoute
   SettingsRoute: typeof SettingsRoute
 }
 
@@ -103,20 +76,6 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/routine': {
-      id: '/routine'
-      path: '/routine'
-      fullPath: '/routine'
-      preLoaderRoute: typeof RoutineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/names': {
-      id: '/names'
-      path: '/names'
-      fullPath: '/names'
-      preLoaderRoute: typeof NamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/library': {
@@ -147,8 +106,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   HistoryRoute: HistoryRoute,
   LibraryRoute: LibraryRoute,
-  NamesRoute: NamesRoute,
-  RoutineRoute: RoutineRoute,
   SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport
