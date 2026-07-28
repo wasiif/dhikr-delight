@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Minus, Plus, RotateCcw, Check } from "lucide-react";
+import { useState } from "react";
+import { Minus, Plus, RotateCcw, Check, Sparkles } from "lucide-react";
 import { TasbihDial } from "@/components/TasbihDial";
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
@@ -25,10 +26,21 @@ export const Route = createFileRoute("/")({
 });
 
 function CounterPage() {
-  const { state, dispatch, active, progress, tap, t, lang } = useDhikr();
+  const { state, dispatch, active, progress, tap, t, lang, hydrated } = useDhikr();
+  const [confirmReset, setConfirmReset] = useState(false);
+  const complete = state.count >= state.target;
+
+  if (!hydrated) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 animate-fade-in">
+        <span className="size-16 animate-[pulse_2s_ease-in-out_infinite] rounded-full border-2 border-gold/40" />
+        <p className="text-sm text-muted-foreground">{t.loading}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-xl space-y-8 animate-fade-in">
       <header className="text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
           {t.currentDhikr}
@@ -46,10 +58,36 @@ function CounterPage() {
 
       <TasbihDial />
 
-      <p className="text-center text-sm text-muted-foreground">
+      <p className="text-center text-sm tabular-nums text-muted-foreground" dir="ltr">
+        {t.countProgress(state.count, state.target)} ·{" "}
         {t.percentComplete(Number(progress.toFixed(0)))}
-        {state.count >= state.target ? ` — ${t.targetReached}` : ""}
       </p>
+
+      {complete ? (
+        <div className="completion-glow rounded-2xl border border-gold/40 bg-gold/10 p-5 text-center animate-scale-in">
+          <Sparkles className="mx-auto size-5 text-gold" aria-hidden="true" />
+          <p className="mt-2 text-lg font-semibold text-gold">{t.tasbihComplete}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t.tasbihCompleteNote}
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => dispatch({ type: "complete" })}
+              className="min-h-11 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              {t.resetAndContinue}
+            </button>
+            <button
+              type="button"
+              onClick={() => tap(1)}
+              className="min-h-11 rounded-full border border-gold/50 px-5 text-sm text-gold transition-colors hover:bg-gold/10"
+            >
+              {t.continueCounting}
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       <div className="flex flex-wrap items-center justify-center gap-2">
         {[5, 1].map((n) => (
@@ -58,7 +96,7 @@ function CounterPage() {
             type="button"
             onClick={() => dispatch({ type: "decrement", by: n })}
             disabled={state.count === 0}
-            className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+            className="inline-flex min-h-11 min-w-14 items-center justify-center gap-1 rounded-full border border-border px-4 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
           >
             <Minus className="size-3.5" />
             {n}
@@ -69,7 +107,7 @@ function CounterPage() {
             key={`plus-${n}`}
             type="button"
             onClick={() => tap(n)}
-            className="inline-flex items-center gap-1 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex min-h-11 min-w-16 items-center justify-center gap-1 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             <Plus className="size-3.5" />
             {n}
@@ -80,8 +118,9 @@ function CounterPage() {
       <div className="flex flex-wrap justify-center gap-3">
         <button
           type="button"
-          onClick={() => dispatch({ type: "reset" })}
-          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-secondary"
+          onClick={() => setConfirmReset(true)}
+          disabled={state.count === 0}
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-5 text-sm transition-colors hover:bg-secondary disabled:opacity-40"
         >
           <RotateCcw className="size-4" />
           {t.resetCounter}
@@ -90,14 +129,42 @@ function CounterPage() {
           type="button"
           onClick={() => dispatch({ type: "complete" })}
           disabled={state.count === 0}
-          className="inline-flex items-center gap-2 rounded-full border border-gold/50 px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold/10 disabled:opacity-40"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm font-medium text-gold transition-colors hover:bg-gold/10 disabled:opacity-40"
         >
           <Check className="size-4" />
           {t.completeSession}
         </button>
       </div>
 
-      <div className="rounded-xl border border-border/70 bg-card/60 p-5">
+      {confirmReset ? (
+        <div className="rounded-2xl border border-destructive/40 bg-card/80 p-5 text-center animate-scale-in">
+          <p className="font-medium">{t.confirmReset}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t.confirmResetBody(state.count)}
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmReset(false)}
+              className="min-h-11 rounded-full border border-border px-5 text-sm transition-colors hover:bg-secondary"
+            >
+              {t.cancel}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({ type: "reset" });
+                setConfirmReset(false);
+              }}
+              className="min-h-11 rounded-full bg-destructive px-5 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
+            >
+              {t.confirm}
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      <div className="rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm">
         <label
           htmlFor="session-note"
           className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
