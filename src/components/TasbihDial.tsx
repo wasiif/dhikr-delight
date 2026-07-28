@@ -45,7 +45,7 @@ export function TasbihDial() {
         onPointerUp={onPointerUp}
         onPointerCancel={() => (start.current = null)}
         onClick={onClick}
-        aria-label={t.countAria(active.transliteration)}
+        aria-label={`${t.countAria(active.transliteration)} — ${t.tapOrSwipe}`}
         className={`bead-pulse relative mx-auto flex size-72 max-w-[85vw] touch-none select-none items-center justify-center rounded-full border border-gold/25 bg-card/80 shadow-lg shadow-primary/5 transition-shadow active:scale-[0.985] sm:size-80 ${
           complete ? "completion-glow" : ""
         }`}
@@ -92,6 +92,9 @@ export function TasbihDial() {
         </span>
       </button>
 
+      <p aria-live="polite" className="sr-only">
+        {t.countStatus(state.count, state.target)}
+      </p>
       <p className="text-xs text-muted-foreground">{t.tapOrSwipe}</p>
     </div>
   );

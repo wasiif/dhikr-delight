@@ -22,6 +22,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { DhikrProvider, useDhikr } from "../lib/dhikr-store";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
+import { SplashScreen } from "../components/SplashScreen";
 
 
 function NotFoundComponent() {
@@ -146,11 +147,13 @@ const navItems = [
 
 
 function Chrome({ children }: { children: ReactNode }) {
-  const { streak, t } = useDhikr();
+  const { streak, t, hydrated } = useDhikr();
   const labels = { ...t.nav, ...t.nav2 } as Record<string, string>;
 
+  if (!hydrated) return <SplashScreen />;
+
   return (
-    <div className="girih min-h-screen bg-background">
+    <div className="girih min-h-dvh bg-background">
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4">
           <Link to="/" className="flex items-baseline gap-2">
@@ -159,11 +162,12 @@ function Chrome({ children }: { children: ReactNode }) {
           </Link>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
-              <Flame className="size-3.5" />
+              <Flame className="size-3.5" aria-hidden="true" />
+              <span className="sr-only">{t.streakLabel}: </span>
               {t.streak(streak)}
             </span>
             <LanguageSwitcher />
-            <nav className="hidden gap-5 text-sm sm:flex">
+            <nav aria-label={t.mainNavLabel} className="hidden gap-5 text-sm sm:flex">
               {navItems.map(({ to, key }) => (
                 <Link
                   key={to}
@@ -182,17 +186,17 @@ function Chrome({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-3xl px-5 pb-28 pt-6 sm:pb-14">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border/60 bg-background/95 backdrop-blur sm:hidden">
+      <nav aria-label={t.sectionNavLabel} className="fixed inset-x-0 bottom-0 z-20 border-t border-border/60 bg-background/95 backdrop-blur sm:hidden">
         <div className="mx-auto flex max-w-3xl">
           {navItems.map(({ to, key, icon: Icon }) => (
             <Link
               key={to}
               to={to}
-              className="flex flex-1 flex-col items-center gap-1 py-3 text-xs text-muted-foreground"
+              className="flex min-h-14 flex-1 flex-col items-center justify-center gap-1 py-2 text-xs text-muted-foreground transition-colors"
               activeProps={{ className: "text-gold" }}
               activeOptions={{ exact: to === "/" }}
             >
-              <Icon className="size-5" />
+              <Icon className="size-5" aria-hidden="true" />
               {labels[key]}
             </Link>
           ))}
