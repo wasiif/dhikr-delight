@@ -156,9 +156,8 @@ function Chrome({ children }: { children: ReactNode }) {
     <div className="girih min-h-dvh bg-background">
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4">
-          <Link to="/" className="flex items-baseline gap-2">
+          <Link to="/" className="flex items-baseline gap-2" aria-label={t.appName}>
             <span className="font-arabic text-2xl leading-none text-gold">ذِكْر</span>
-            <span className="text-lg font-semibold tracking-wide">{t.appName}</span>
           </Link>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
