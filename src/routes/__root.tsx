@@ -14,8 +14,6 @@ import {
   History,
   Settings,
   BookOpen,
-  Sparkles,
-  Sunrise,
 } from "lucide-react";
 
 import appCss from "../styles.css?url";
@@ -139,8 +137,6 @@ function RootShell({ children }: { children: ReactNode }) {
 const navItems = [
   { to: "/", key: "counter", icon: CircleDot },
   { to: "/library", key: "library", icon: BookOpen },
-  { to: "/names", key: "names", icon: Sparkles },
-  { to: "/routine", key: "routine", icon: Sunrise },
   { to: "/history", key: "history", icon: History },
   { to: "/settings", key: "settings", icon: Settings },
 ] as const;
