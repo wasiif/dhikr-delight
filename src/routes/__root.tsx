@@ -8,9 +8,11 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Flame, CircleDot, History, Settings } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { DhikrProvider, useDhikr } from "../lib/dhikr-store";
 
 function NotFoundComponent() {
   return (
@@ -77,19 +79,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Dhikr Counter — Digital Tasbih" },
+      {
+        name: "description",
+        content:
+          "A calm digital tasbih for daily dhikr: targets, session notes, history and streaks.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "theme-color", content: "#0b2a2c" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous",
+      },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&family=Alegreya+Sans:wght@400;500;700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -102,7 +112,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -114,13 +124,78 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const navItems = [
+  { to: "/", label: "Counter", icon: CircleDot },
+  { to: "/history", label: "History", icon: History },
+  { to: "/settings", label: "Settings", icon: Settings },
+] as const;
+
+function Chrome({ children }: { children: ReactNode }) {
+  const { streak } = useDhikr();
+
+  return (
+    <div className="girih min-h-screen bg-background">
+      <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
+        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-4">
+          <Link to="/" className="flex items-baseline gap-2">
+            <span className="font-arabic text-2xl leading-none text-gold">ذِكْر</span>
+            <span className="text-lg font-semibold tracking-wide">Dhikr Counter</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
+              <Flame className="size-3.5" />
+              {streak} day{streak === 1 ? "" : "s"}
+            </span>
+            <nav className="hidden gap-5 text-sm sm:flex">
+              {navItems.map(({ to, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="text-muted-foreground transition-colors hover:text-foreground"
+                  activeProps={{ className: "text-gold font-medium" }}
+                  activeOptions={{ exact: to === "/" }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-3xl px-5 pb-28 pt-6 sm:pb-14">{children}</main>
+
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border/60 bg-background/95 backdrop-blur sm:hidden">
+        <div className="mx-auto flex max-w-3xl">
+          {navItems.map(({ to, label, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="flex flex-1 flex-col items-center gap-1 py-3 text-xs text-muted-foreground"
+              activeProps={{ className: "text-gold" }}
+              activeOptions={{ exact: to === "/" }}
+            >
+              <Icon className="size-5" />
+              {label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </div>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <DhikrProvider>
+        <Chrome>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </Chrome>
+      </DhikrProvider>
     </QueryClientProvider>
   );
 }
