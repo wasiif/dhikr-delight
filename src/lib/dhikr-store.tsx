@@ -275,6 +275,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
         if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
           navigator.vibrate([18, 60, 40]);
         }
+        dispatch({ type: "increment", by });
         dispatch({ type: "complete" });
         return;
       }
