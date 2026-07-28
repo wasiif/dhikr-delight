@@ -164,7 +164,44 @@
     font-family: var(--font-display);
     letter-spacing: 0.01em;
   }
+
+  /* Arabic UI: Naskh for labels, Amiri stays for dhikr text via .font-arabic */
+  html[lang="ar"] body,
+  html[lang="ar"] h1,
+  html[lang="ar"] h2,
+  html[lang="ar"] h3,
+  html[lang="ar"] input,
+  html[lang="ar"] textarea,
+  html[lang="ar"] select,
+  html[lang="ar"] button {
+    font-family: var(--font-arabic-ui);
+    letter-spacing: normal;
+  }
+
+  /* Urdu UI: Nastaliq needs extra line height and no uppercase tracking */
+  html[lang="ur"] body,
+  html[lang="ur"] h1,
+  html[lang="ur"] h2,
+  html[lang="ur"] h3,
+  html[lang="ur"] input,
+  html[lang="ur"] textarea,
+  html[lang="ur"] select,
+  html[lang="ur"] button {
+    font-family: var(--font-urdu);
+    line-height: 2.1;
+    letter-spacing: normal;
+  }
+
+  html[lang="ar"] [class*="uppercase"],
+  html[lang="ur"] [class*="uppercase"] {
+    text-transform: none;
+  }
+
+  html[dir="rtl"] .font-arabic {
+    font-family: var(--font-arabic);
+  }
 }
+
 
 /* Eight-point star (khatim) lattice — low opacity, never behind body text directly. */
 @utility girih {
