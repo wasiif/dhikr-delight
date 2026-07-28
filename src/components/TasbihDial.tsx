@@ -50,16 +50,17 @@ export function TasbihDial() {
 
 
       <span className="relative flex flex-col items-center gap-1 px-8 text-center">
-        <span className="font-arabic text-3xl leading-tight text-gold">
+        <span className="font-arabic text-3xl leading-tight text-gold" dir="rtl">
           {active.arabic}
         </span>
         <span className="text-6xl font-semibold tabular-nums text-foreground">
           {state.count}
         </span>
         <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-          of {state.target}
+          {t.ofTarget} {state.target}
         </span>
       </span>
+
     </button>
   );
 }
