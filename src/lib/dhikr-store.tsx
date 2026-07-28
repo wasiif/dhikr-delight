@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { DEFAULT_DHIKRS, DEFAULT_TARGET, type Dhikr } from "./dhikr-data";
+import { getDict, isRtl, LOCALES, type Language } from "./i18n";
 import type { Session } from "./export-history";
 
 const STORAGE_KEY = "dhikr-counter-app-state";
@@ -22,6 +23,7 @@ export type DhikrState = {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
   darkMode: boolean;
+  language: Language;
 };
 
 const initialState: DhikrState = {
@@ -35,6 +37,7 @@ const initialState: DhikrState = {
   soundEnabled: true,
   vibrationEnabled: true,
   darkMode: true,
+  language: "en",
 };
 
 type Action =
@@ -49,7 +52,9 @@ type Action =
   | { type: "removePhrase"; id: string }
   | { type: "setNote"; note: string }
   | { type: "clearHistory" }
+  | { type: "setLanguage"; language: Language }
   | { type: "toggle"; key: "soundEnabled" | "vibrationEnabled" | "darkMode" };
+
 
 function reducer(state: DhikrState, action: Action): DhikrState {
   switch (action.type) {
@@ -114,6 +119,9 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       return { ...state, note: action.note };
     case "clearHistory":
       return { ...state, history: [] };
+    case "setLanguage":
+      return { ...state, language: action.language };
+
     case "toggle":
       return { ...state, [action.key]: !state[action.key] };
     default:
@@ -148,7 +156,13 @@ type DhikrContextValue = {
   streak: number;
   hydrated: boolean;
   tap: (by: number) => void;
+  lang: Language;
+  t: ReturnType<typeof getDict>;
+  rtl: boolean;
+  locale: string;
+  setLanguage: (language: Language) => void;
 };
+
 
 const DhikrContext = createContext<DhikrContextValue | null>(null);
 
@@ -179,6 +193,13 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", state.darkMode);
   }, [state.darkMode]);
 
+  const rtl = isRtl(state.language);
+
+  useEffect(() => {
+    document.documentElement.lang = state.language;
+    document.documentElement.dir = rtl ? "rtl" : "ltr";
+  }, [state.language, rtl]);
+
   const phrases = useMemo(
     () => [...DEFAULT_DHIKRS, ...state.customPhrases],
     [state.customPhrases],
@@ -197,6 +218,11 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     progress,
     streak,
     hydrated,
+    lang: state.language,
+    t: getDict(state.language),
+    rtl,
+    locale: LOCALES[state.language] ?? "en-US",
+    setLanguage: (language: Language) => dispatch({ type: "setLanguage", language }),
     tap: (by: number) => {
       if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(18);
@@ -205,6 +231,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "increment", by });
     },
   };
+
 
   return <DhikrContext.Provider value={value}>{children}</DhikrContext.Provider>;
 }

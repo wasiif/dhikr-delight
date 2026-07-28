@@ -13,6 +13,8 @@ import { Flame, CircleDot, History, Settings } from "lucide-react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { DhikrProvider, useDhikr } from "../lib/dhikr-store";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
+
 
 function NotFoundComponent() {
   return (
@@ -99,8 +101,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&family=Alegreya+Sans:wght@400;500;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&family=Alegreya+Sans:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu:wght@400;500;700&display=swap",
       },
+
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -125,29 +128,30 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 const navItems = [
-  { to: "/", label: "Counter", icon: CircleDot },
-  { to: "/history", label: "History", icon: History },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/", key: "counter", icon: CircleDot },
+  { to: "/history", key: "history", icon: History },
+  { to: "/settings", key: "settings", icon: Settings },
 ] as const;
 
 function Chrome({ children }: { children: ReactNode }) {
-  const { streak } = useDhikr();
+  const { streak, t } = useDhikr();
 
   return (
     <div className="girih min-h-screen bg-background">
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-5 py-4">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4">
           <Link to="/" className="flex items-baseline gap-2">
             <span className="font-arabic text-2xl leading-none text-gold">ذِكْر</span>
-            <span className="text-lg font-semibold tracking-wide">Dhikr Counter</span>
+            <span className="text-lg font-semibold tracking-wide">{t.appName}</span>
           </Link>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
               <Flame className="size-3.5" />
-              {streak} day{streak === 1 ? "" : "s"}
+              {t.streak(streak)}
             </span>
+            <LanguageSwitcher />
             <nav className="hidden gap-5 text-sm sm:flex">
-              {navItems.map(({ to, label }) => (
+              {navItems.map(({ to, key }) => (
                 <Link
                   key={to}
                   to={to}
@@ -155,7 +159,7 @@ function Chrome({ children }: { children: ReactNode }) {
                   activeProps={{ className: "text-gold font-medium" }}
                   activeOptions={{ exact: to === "/" }}
                 >
-                  {label}
+                  {t.nav[key]}
                 </Link>
               ))}
             </nav>
@@ -167,7 +171,7 @@ function Chrome({ children }: { children: ReactNode }) {
 
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-border/60 bg-background/95 backdrop-blur sm:hidden">
         <div className="mx-auto flex max-w-3xl">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItems.map(({ to, key, icon: Icon }) => (
             <Link
               key={to}
               to={to}
@@ -176,7 +180,7 @@ function Chrome({ children }: { children: ReactNode }) {
               activeOptions={{ exact: to === "/" }}
             >
               <Icon className="size-5" />
-              {label}
+              {t.nav[key]}
             </Link>
           ))}
         </div>
@@ -184,6 +188,7 @@ function Chrome({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();

@@ -24,11 +24,11 @@ export const Route = createFileRoute("/history")({
 });
 
 function HistoryPage() {
-  const { state, dispatch, hydrated } = useDhikr();
+  const { state, dispatch, hydrated, t, locale } = useDhikr();
 
   const grouped = state.history.reduce<Record<string, typeof state.history>>(
     (acc, session) => {
-      const date = new Date(session.completedAt).toLocaleDateString(undefined, {
+      const date = new Date(session.completedAt).toLocaleDateString(locale, {
         weekday: "long",
         day: "numeric",
         month: "long",
@@ -43,9 +43,9 @@ function HistoryPage() {
     <div className="space-y-8">
       <header>
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Record
+          {t.record}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">Session history</h1>
+        <h1 className="mt-2 text-3xl font-semibold">{t.sessionHistory}</h1>
       </header>
 
       <div className="flex flex-wrap gap-2">
@@ -71,14 +71,13 @@ function HistoryPage() {
           disabled={!state.history.length}
           className="inline-flex items-center gap-2 rounded-full border border-destructive/40 px-4 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-40"
         >
-          <Trash2 className="size-4" /> Clear
+          <Trash2 className="size-4" /> {t.clear}
         </button>
       </div>
 
       {hydrated && !state.history.length ? (
         <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-          No sessions saved yet. Complete a session on the counter and it will appear
-          here.
+          {t.emptyHistory}
         </p>
       ) : null}
 
@@ -95,27 +94,31 @@ function HistoryPage() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <p className="font-arabic text-xl text-gold">{session.arabic}</p>
-                    <p className="mt-1 font-medium">{session.phrase}</p>
+                    <p className="font-arabic text-xl text-gold" dir="rtl">
+                      {session.arabic}
+                    </p>
+                    <p className="mt-1 font-medium" dir="ltr">
+                      {session.phrase}
+                    </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="text-2xl font-semibold tabular-nums">
                       {session.count}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      of {session.target}
+                      {t.of} {session.target}
                     </p>
                   </div>
                 </div>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  {new Date(session.completedAt).toLocaleTimeString([], {
+                  {new Date(session.completedAt).toLocaleTimeString(locale, {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}{" "}
-                  · {session.durationMinutes} min
+                  · {session.durationMinutes} {t.minutes}
                 </p>
                 {session.note ? (
-                  <p className="mt-3 border-l-2 border-gold/40 pl-3 text-sm text-muted-foreground">
+                  <p className="mt-3 border-s-2 border-gold/40 ps-3 text-sm text-muted-foreground">
                     {session.note}
                   </p>
                 ) : null}
