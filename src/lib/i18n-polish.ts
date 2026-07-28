@@ -40,6 +40,10 @@ export type PolishDict = {
   aboutTitle: string;
   aboutBody: string;
   credits: string;
+  textSize: string;
+  aboutFeedback: string;
+  developer: string;
+  viewGithub: string;
   splashTagline: string;
   mainNavLabel: string;
   sectionNavLabel: string;
@@ -82,6 +86,10 @@ export const POLISH: Record<Language, PolishDict> = {
     aboutBody:
       "Dhikr is the remembrance of Allah — a quiet, steady practice of the heart. This app is only a simple aid for counting; the intention and sincerity are yours. Arabic texts follow standard, widely accepted wordings.",
     credits: "Built with care. Fonts: Amiri, Noto Naskh Arabic, Noto Nastaliq Urdu.",
+    textSize: "Text size",
+    aboutFeedback: "Found a mistake in a text or reference, or have a suggestion? Please reach out — corrections are welcome and appreciated.",
+    developer: "Developer",
+    viewGithub: "github.com/wasiif",
     splashTagline: "A calm digital tasbih",
     mainNavLabel: "Main navigation",
     sectionNavLabel: "Sections",
@@ -122,6 +130,10 @@ export const POLISH: Record<Language, PolishDict> = {
     aboutBody:
       "الذكر هو تذكّر الله، عمل قلبي هادئ ومستمر. هذا التطبيق مجرد وسيلة بسيطة للعدّ، والنية والإخلاص لك. النصوص العربية وفق الصيغ المعتمدة المشهورة.",
     credits: "صُنع بعناية. الخطوط: أميري، نوتو نسخ، نوتو نستعليق.",
+    textSize: "حجم النص",
+    aboutFeedback: "هل وجدت خطأً في نص أو مرجع، أو لديك اقتراح؟ تواصل معنا — التصحيحات مرحّب بها.",
+    developer: "المطوّر",
+    viewGithub: "github.com/wasiif",
     splashTagline: "مسبحة رقمية هادئة",
     mainNavLabel: "التنقل الرئيسي",
     sectionNavLabel: "الأقسام",
@@ -162,6 +174,10 @@ export const POLISH: Record<Language, PolishDict> = {
     aboutBody:
       "ذکر اللہ کی یاد ہے — دل کا پرسکون اور مستقل عمل۔ یہ ایپ صرف شمار کے لیے ایک سادہ مددگار ہے؛ نیت اور اخلاص آپ کا ہے۔ عربی متون معروف اور مستند الفاظ کے مطابق ہیں۔",
     credits: "محبت سے بنایا گیا۔ فونٹس: امیری، نوٹو نسخ، نوٹو نستعلیق۔",
+    textSize: "متن کا سائز",
+    aboutFeedback: "اگر کسی متن یا حوالے میں غلطی نظر آئے یا کوئی تجویز ہو تو رابطہ کریں — اصلاح خوش آئند ہے۔",
+    developer: "ڈیولپر",
+    viewGithub: "github.com/wasiif",
     splashTagline: "ایک پرسکون ڈیجیٹل تسبیح",
     mainNavLabel: "مرکزی نیویگیشن",
     sectionNavLabel: "حصے",
