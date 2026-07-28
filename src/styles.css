@@ -200,6 +200,16 @@
   html[dir="rtl"] .font-arabic {
     font-family: var(--font-arabic);
   }
+
+  /* User-adjustable Arabic text size for readability */
+  .font-arabic {
+    font-size: calc(1em * var(--arabic-scale, 1));
+  }
+
+  /* Mirror directional icons in RTL; non-directional icons stay as-is */
+  html[dir="rtl"] .rtl-mirror {
+    transform: scaleX(-1);
+  }
 }
 
 
