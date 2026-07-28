@@ -8,6 +8,9 @@ export type Dhikr = {
   translations: Record<Language, string>;
   defaultTarget: number;
   custom?: boolean;
+  /** Target is a suggestion only (e.g. salawat) — user picks the count. */
+  customizableTarget?: boolean;
+
 };
 
 export const DEFAULT_TARGET = 33;
