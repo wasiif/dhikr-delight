@@ -207,7 +207,11 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) dispatch({ type: "hydrate", state: JSON.parse(raw) });
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.language === "ar") parsed.language = "en";
+        dispatch({ type: "hydrate", state: parsed });
+      }
     } catch {
       /* ignore malformed storage */
     }
