@@ -1,34 +1,104 @@
-# Dhikr Delight
+# Dhikr Counter — Digital Tasbih
 
-https://github.com/wasiif/DhikrCounter.git    i have connected this repo,  dont touch main branch  , make a new branch u will do all the work in this branch ,  name it islamic-redesign,then    Before making any changes, review the current codebase of this project. Give me a short summary of:
+A calm, Islamic-inspired digital tasbih (misbaha) for daily dhikr. Tap or swipe to
+count, follow guided sequences like Tasbih Fatimah, browse the 99 Names of Allah and
+morning/evening adhkar, and track your daily streak — all offline in the browser.
 
-- The main components/files involved in the tasbih counter (state management, counter logic, UI)
+Built with [Lovable](https://lovable.dev) on TanStack Start.
 
-- How dhikr entries/configurations are currently stored (hardcoded array, JSON file, database, etc.)
+---
 
-- The current styling approach (Tailwind, CSS modules, plain CSS, a UI library like shadcn)
+## Features
 
-- Any existing routing/navigation structure
+| Area | What it does |
+| --- | --- |
+| Counter | Tap or swipe the gold progress dial, live count/target, gentle pulse + shimmer on milestones |
+| Tasbih Fatimah | Auto-advances SubhanAllah ×33 → Alhamdulillah ×33 → Allahu Akbar ×34 (100 total) |
+| Library | One screen, three tabs: Tasbihs, 99 Names of Allah, Duas — searchable responsive tile grid |
+| Adhkar routines | Guided morning & evening sequences with per-item counts |
+| History | Sessions grouped by day, today/week totals, streak, JSON & CSV export |
+| Settings | Language, light/night theme, global text-size slider, sound & haptics, custom adhkar, reset all data |
+| i18n | English and Urdu, with full RTL layout mirroring and per-language fonts |
+| Storage | 100% local (`localStorage`) — no account, no backend, no tracking |
 
-Don't change any code yet — just summarize what's there so we can plan the redesign around the existing structure.
+## Tech stack
 
-This project was built with [Lovable](https://lovable.dev).
+- **Framework**: TanStack Start v1 (React 19, SSR) + TanStack Router file-based routing
+- **Build**: Vite 7
+- **Styling**: Tailwind CSS v4 (`src/styles.css`, OKLCH design tokens) + shadcn/ui primitives
+- **State**: React Context + `useReducer` (`src/lib/dhikr-store.tsx`), persisted to `localStorage`
+- **Icons**: lucide-react
+- **Fonts**: Amiri (Arabic), Cormorant Garamond (headings), Alegreya Sans (UI), Noto Nastaliq Urdu
 
-## Build with Lovable
+## Getting started
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/37cd746e-cffa-44c3-8611-531b18215eac).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requires Node.js 20+ (or Bun).
 
 ```sh
 git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+cd <project>
+npm install
+npm run dev        # http://localhost:8080
 ```
+
+Scripts:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the dev server with HMR |
+| `npm run build` | Production build |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier |
+
+## Project structure
+
+```text
+src/
+  routes/                 file-based routes (URL = filename)
+    __root.tsx            html shell, head defaults, header + nav, providers
+    index.tsx             counter screen ("/")
+    library.tsx           library with Tasbihs / Names / Duas tabs
+    history.tsx           sessions, stats, export
+    settings.tsx          preferences + about
+    sitemap[.]xml.ts      server route emitting /sitemap.xml
+  components/
+    TasbihDial.tsx        SVG progress ring, tap + swipe handling
+    SplashScreen.tsx      shown until state hydrates
+    Skeletons.tsx         loading placeholders
+    LanguageSwitcher.tsx  language control (settings only)
+    library/              LibraryTile, NamesGrid (lazy), DuasSection (lazy)
+  lib/
+    dhikr-store.tsx       reducer, persistence, sound/haptics, language + theme
+    dhikr-data.ts         default adhkar, Tasbih Fatimah steps
+    tasbih-collection.ts  named tasbihs with references
+    asma-data.ts          99 Names of Allah
+    routine-data.ts       morning & evening adhkar
+    i18n*.ts              translation dictionaries
+    export-history.ts     JSON / CSV export
+  styles.css              theme tokens, girih pattern, animations, RTL utilities
+public/
+  robots.txt              crawler rules
+```
+
+Full architecture notes: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+## Content accuracy
+
+References for tasbihs and adhkar are limited to verifiable sources (Qur'an ayah
+numbers, Bukhari/Muslim/Tirmidhi/Abu Dawud). Items without a confirmed citation are
+shown without one rather than with a guessed reference. If you spot a mistake, please
+open an issue — corrections are welcome.
+
+## SEO
+
+- Unique title, description, canonical and Open Graph/Twitter tags per route
+- JSON-LD: `WebSite` (root), `WebApplication` + `FAQPage` (home), `BreadcrumbList` (library)
+- `/sitemap.xml` generated by a server route; `public/robots.txt` allows all crawlers
+
+Set the absolute `BASE_URL` in `src/routes/sitemap[.]xml.ts` once a custom domain is
+connected.
+
+## Credits
+
+Developed by [@wasiif](https://github.com/wasiif). Feedback and corrections welcome.
