@@ -91,11 +91,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A calm digital tasbih for daily dhikr: targets, session notes, history and streaks.",
+          "A calm digital tasbih for daily dhikr: targets, history, streaks, the 99 names of Allah and guided adhkar.",
       },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Dhikr Counter" },
+      { property: "og:locale", content: "en_US" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0b2a2c" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "Dhikr Counter" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -112,7 +117,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Dhikr Counter",
+          alternateName: "Digital Tasbih",
+          description:
+            "A calm digital tasbih for daily dhikr with targets, history, streaks, the 99 names of Allah and guided adhkar.",
+          inLanguage: ["en", "ur"],
+        }),
+      },
+    ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
