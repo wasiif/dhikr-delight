@@ -188,7 +188,33 @@
   html[lang="ur"] select,
   html[lang="ur"] button {
     font-family: var(--font-urdu);
-    line-height: 2.1;
+    line-height: 2.35;
+    letter-spacing: normal;
+    word-spacing: 0.08em;
+  }
+
+  /* Nastaliq descenders need breathing room inside tight blocks */
+  html[lang="ur"] p,
+  html[lang="ur"] span,
+  html[lang="ur"] li,
+  html[lang="ur"] a,
+  html[lang="ur"] button {
+    line-height: 2.35;
+  }
+
+  html[lang="ur"] h1,
+  html[lang="ur"] h2,
+  html[lang="ur"] h3 {
+    padding-block: 0.15em;
+  }
+
+  html[lang="ur"] [class*="line-clamp"] {
+    overflow: visible;
+    display: block;
+    -webkit-line-clamp: unset;
+  }
+
+  html[lang="ur"] [class*="tracking-"] {
     letter-spacing: normal;
   }
 
@@ -201,9 +227,9 @@
     font-family: var(--font-arabic);
   }
 
-  /* User-adjustable Arabic text size for readability */
-  .font-arabic {
-    font-size: calc(1em * var(--arabic-scale, 1));
+  /* User-adjustable app-wide text size for readability */
+  html {
+    font-size: calc(100% * var(--app-scale, 1));
   }
 
   /* Mirror directional icons in RTL; non-directional icons stay as-is */

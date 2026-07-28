@@ -290,7 +290,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.style.setProperty(
-      "--arabic-scale",
+      "--app-scale",
       String(state.arabicScale),
     );
   }, [state.arabicScale]);
