@@ -147,22 +147,6 @@ function CounterPage() {
         </div>
       ) : null}
 
-      <div className="rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm">
-        <label
-          htmlFor="session-note"
-          className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
-        >
-          {t.sessionNote}
-        </label>
-        <textarea
-          id="session-note"
-          rows={3}
-          value={state.note}
-          onChange={(e) => dispatch({ type: "setNote", note: e.target.value })}
-          placeholder={t.sessionNotePlaceholder}
-          className="mt-3 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-        />
-      </div>
 
       <blockquote className="text-center">
         <p className="font-arabic text-xl leading-loose text-gold" dir="rtl">
