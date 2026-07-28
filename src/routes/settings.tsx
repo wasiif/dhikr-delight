@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Plus, X, Sun, Moon, Trash2, Heart } from "lucide-react";
+import { Plus, X, Sun, Moon, Trash2, Heart, Github, MessageCircle } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -64,12 +64,6 @@ function SettingsPage() {
     { dark: true, label: t.nightMode, Icon: Moon },
   ];
 
-  const sizes = [
-    { scale: 1, label: t.fontSmall },
-    { scale: 1.15, label: t.fontMedium },
-    { scale: 1.35, label: t.fontLarge },
-  ];
-
   const sectionTitle =
     "text-sm font-medium uppercase tracking-[0.2em] text-gold";
 
@@ -118,37 +112,28 @@ function SettingsPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className={sectionTitle}>{t.arabicFontSize}</h2>
-        <div
-          className="grid grid-cols-3 gap-3"
-          role="radiogroup"
-          aria-label={t.arabicFontSize}
-        >
-          {sizes.map(({ scale, label }) => {
-            const selected = Math.abs(state.arabicScale - scale) < 0.01;
-            return (
-              <button
-                key={label}
-                type="button"
-                role="radio"
-                aria-checked={selected}
-                onClick={() => dispatch({ type: "setArabicScale", scale })}
-                className={`min-h-12 rounded-2xl border text-sm transition-colors ${
-                  selected
-                    ? "border-gold/70 bg-gold/10 text-gold"
-                    : "border-border/70 bg-card/60 text-muted-foreground hover:border-gold/40"
-                }`}
-              >
-                {label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="rounded-2xl border border-border/70 bg-card/60 p-4 text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <h2 className={sectionTitle}>{t.textSize}</h2>
+        <div className="rounded-2xl border border-border/70 bg-card/60 p-5">
+          <div className="flex items-center gap-3" dir="ltr">
+            <span className="text-xs text-muted-foreground">{t.fontSmall}</span>
+            <input
+              type="range"
+              min={0.9}
+              max={1.25}
+              step={0.05}
+              value={Math.min(1.25, Math.max(0.9, state.arabicScale))}
+              aria-label={t.textSize}
+              onChange={(e) =>
+                dispatch({ type: "setArabicScale", scale: Number(e.target.value) })
+              }
+              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-[var(--gold)]"
+            />
+            <span className="text-base text-muted-foreground">{t.fontLarge}</span>
+          </div>
+          <p className="mt-4 text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
             {t.fontPreviewLabel}
           </p>
-          <p className="font-arabic mt-2 text-3xl text-gold" dir="rtl">
+          <p className="font-arabic mt-2 text-center text-3xl text-gold" dir="rtl">
             سُبْحَانَ اللَّٰهِ وَبِحَمْدِهِ
           </p>
         </div>
@@ -319,6 +304,29 @@ function SettingsPage() {
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {t.aboutBody}
           </p>
+
+          <div className="mt-5 rounded-xl border border-gold/30 bg-gold/5 p-4">
+            <p className="flex items-start gap-2 text-sm leading-relaxed">
+              <MessageCircle className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
+              <span>{t.aboutFeedback}</span>
+            </p>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
+            <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              {t.developer}
+            </span>
+            <a
+              href="https://github.com/wasiif"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-gold/50 px-4 text-sm text-gold transition-colors hover:bg-gold/10"
+            >
+              <Github className="size-4" aria-hidden="true" />
+              {t.viewGithub}
+            </a>
+          </div>
+
           <p className="mt-4 inline-flex items-center gap-2 text-xs text-muted-foreground">
             <Heart className="size-3.5 text-gold" aria-hidden="true" />
             {t.credits}

@@ -19,7 +19,6 @@ import {
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { DhikrProvider, useDhikr } from "../lib/dhikr-store";
-import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SplashScreen } from "../components/SplashScreen";
 
 
@@ -151,17 +150,16 @@ function Chrome({ children }: { children: ReactNode }) {
   return (
     <div className="girih min-h-dvh bg-background">
       <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4">
-          <Link to="/" className="flex items-baseline gap-2" aria-label={t.appName}>
-            <span className="font-arabic text-2xl leading-none text-gold">ذِكْر</span>
-          </Link>
+        <div
+          dir="ltr"
+          className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-5 py-4"
+        >
+          <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
+            <Flame className="size-3.5" aria-hidden="true" />
+            <span className="sr-only">{t.streakLabel}: </span>
+            {t.streak(streak)}
+          </span>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 rounded-full border border-gold/40 px-3 py-1 text-xs font-medium text-gold">
-              <Flame className="size-3.5" aria-hidden="true" />
-              <span className="sr-only">{t.streakLabel}: </span>
-              {t.streak(streak)}
-            </span>
-            <LanguageSwitcher />
             <nav aria-label={t.mainNavLabel} className="hidden gap-5 text-sm sm:flex">
               {navItems.map(({ to, key }) => (
                 <Link
@@ -175,6 +173,9 @@ function Chrome({ children }: { children: ReactNode }) {
                 </Link>
               ))}
             </nav>
+            <Link to="/" className="flex items-baseline gap-2" aria-label={t.appName}>
+              <span className="font-arabic text-2xl leading-none text-gold">ذِكْر</span>
+            </Link>
           </div>
         </div>
       </header>
