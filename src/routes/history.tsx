@@ -3,25 +3,27 @@ import { Download, Trash2 } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
 import { exportHistory } from "@/lib/export-history";
 
+const H_TITLE = "Dhikr History & Streaks — Dhikr Counter";
+const H_DESC =
+  "Review your dhikr sessions day by day, see today's and this week's totals, track your streak and export the full record as JSON or CSV.";
+
 export const Route = createFileRoute("/history")({
   head: () => ({
     meta: [
-      { title: "Session History — Dhikr Counter" },
-      {
-        name: "description",
-        content:
-          "Review your dhikr sessions grouped by day and export the full record as JSON or CSV.",
-      },
-      { property: "og:title", content: "Session History — Dhikr Counter" },
-      {
-        property: "og:description",
-        content:
-          "Review your dhikr sessions grouped by day and export the full record as JSON or CSV.",
-      },
+      { title: H_TITLE },
+      { name: "description", content: H_DESC },
+      { property: "og:title", content: H_TITLE },
+      { property: "og:description", content: H_DESC },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/history" },
+      { name: "twitter:title", content: H_TITLE },
+      { name: "twitter:description", content: H_DESC },
     ],
+    links: [{ rel: "canonical", href: "/history" }],
   }),
   component: HistoryPage,
 });
+
 
 function HistoryPage() {
   const { state, dispatch, hydrated, t, locale, todayTotal, weekTotal, streak } =

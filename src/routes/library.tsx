@@ -10,25 +10,45 @@ import { ListSkeleton, TileGridSkeleton } from "@/components/Skeletons";
 const NamesGrid = lazy(() => import("@/components/library/NamesGrid"));
 const DuasSection = lazy(() => import("@/components/library/DuasSection"));
 
+const LIB_TITLE = "Dhikr Library — Tasbihs, 99 Names of Allah & Duas";
+const LIB_DESC =
+  "Browse a complete dhikr library: named tasbihs with references, all 99 names of Allah (Asma-ul-Husna) with meanings, and guided morning and evening adhkar you can count.";
+
 export const Route = createFileRoute("/library")({
   head: () => ({
     meta: [
-      { title: "Library — Tasbihs, 99 Names & Duas" },
+      { title: LIB_TITLE },
+      { name: "description", content: LIB_DESC },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "One library for everything to count or read: named tasbihs, the 99 names of Allah, and guided morning and evening adhkar.",
+          "99 names of allah, asma ul husna, morning adhkar, evening adhkar, istighfar, durood ibrahim, ayat al kursi, kalima tayyibah",
       },
-      { property: "og:title", content: "Library — Tasbihs, 99 Names & Duas" },
+      { property: "og:title", content: LIB_TITLE },
+      { property: "og:description", content: LIB_DESC },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/library" },
+      { name: "twitter:title", content: LIB_TITLE },
+      { name: "twitter:description", content: LIB_DESC },
+    ],
+    links: [{ rel: "canonical", href: "/library" }],
+    scripts: [
       {
-        property: "og:description",
-        content:
-          "Named tasbihs, the 99 names of Allah and guided adhkar routines in one calm library.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+            { "@type": "ListItem", position: 2, name: "Library", item: "/library" },
+          ],
+        }),
       },
     ],
   }),
   component: LibraryPage,
 });
+
 
 type Tab = "tasbihs" | "names" | "duas";
 
