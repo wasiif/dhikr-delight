@@ -119,6 +119,9 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       return { ...state, note: action.note };
     case "clearHistory":
       return { ...state, history: [] };
+    case "setLanguage":
+      return { ...state, language: action.language };
+
     case "toggle":
       return { ...state, [action.key]: !state[action.key] };
     default:
@@ -153,7 +156,13 @@ type DhikrContextValue = {
   streak: number;
   hydrated: boolean;
   tap: (by: number) => void;
+  lang: Language;
+  t: ReturnType<typeof getDict>;
+  rtl: boolean;
+  locale: string;
+  setLanguage: (language: Language) => void;
 };
+
 
 const DhikrContext = createContext<DhikrContextValue | null>(null);
 
