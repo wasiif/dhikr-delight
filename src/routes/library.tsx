@@ -43,19 +43,22 @@ function LibraryPage() {
   // Paint the first tab immediately, then warm the heavier chunks in the background.
   useEffect(() => {
     setReady(true);
-    const idle =
-      typeof window !== "undefined" && "requestIdleCallback" in window
-        ? window.requestIdleCallback
-        : (cb: () => void) => window.setTimeout(cb, 300);
-    const handle = idle(() => {
-      void import("@/components/library/NamesGrid");
-      void import("@/components/library/DuasSection");
-    });
+    const w = window as unknown as {
+      requestIdleCallback?: (cb: () => void) => number;
+      cancelIdleCallback?: (h: number) => void;
+      setTimeout: (cb: () => void, ms: number) => number;
+      clearTimeout: (h: number) => void;
+    };
+    const useIdle = typeof w.requestIdleCallback === "function";
+    const handle = useIdle
+      ? w.requestIdleCallback!(warm)
+      : w.setTimeout(warm, 300);
     return () => {
-      if ("cancelIdleCallback" in window) window.cancelIdleCallback(handle as number);
-      else window.clearTimeout(handle as number);
+      if (useIdle) w.cancelIdleCallback?.(handle);
+      else w.clearTimeout(handle);
     };
   }, []);
+
 
   const tasbihs = useMemo(() => {
     const extras: TasbihItem[] = DEFAULT_DHIKRS.filter(

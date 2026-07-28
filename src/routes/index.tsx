@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus, RotateCcw, Sparkles } from "lucide-react";
 import { TasbihDial } from "@/components/TasbihDial";
+import { CounterSkeleton } from "@/components/Skeletons";
+
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 
