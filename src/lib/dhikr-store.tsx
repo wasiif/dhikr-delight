@@ -22,6 +22,7 @@ export type DhikrState = {
   sessionStart: number;
   soundEnabled: boolean;
   vibrationEnabled: boolean;
+  autoReset: boolean;
   darkMode: boolean;
   language: Language;
 };
@@ -34,8 +35,9 @@ const initialState: DhikrState = {
   note: "",
   history: [],
   sessionStart: 0,
-  soundEnabled: true,
+  soundEnabled: false,
   vibrationEnabled: true,
+  autoReset: false,
   darkMode: true,
   language: "en",
 };
@@ -54,7 +56,10 @@ type Action =
   | { type: "setNote"; note: string }
   | { type: "clearHistory" }
   | { type: "setLanguage"; language: Language }
-  | { type: "toggle"; key: "soundEnabled" | "vibrationEnabled" | "darkMode" };
+  | {
+      type: "toggle";
+      key: "soundEnabled" | "vibrationEnabled" | "autoReset" | "darkMode";
+    };
 
 
 function reducer(state: DhikrState, action: Action): DhikrState {
@@ -170,6 +175,8 @@ type DhikrContextValue = {
   active: Dhikr;
   progress: number;
   streak: number;
+  todayTotal: number;
+  weekTotal: number;
   hydrated: boolean;
   tap: (by: number) => void;
   lang: Language;
@@ -225,6 +232,23 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
   const progress =
     state.target > 0 ? Math.min((state.count / state.target) * 100, 100) : 0;
   const streak = useMemo(() => computeStreak(state.history), [state.history]);
+  const { todayTotal, weekTotal } = useMemo(() => {
+    const now = new Date();
+    const startOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+    ).getTime();
+    const startOfWeek = startOfDay - 6 * 24 * 60 * 60 * 1000;
+    return state.history.reduce(
+      (acc, s) => {
+        if (s.completedAt >= startOfDay) acc.todayTotal += s.count;
+        if (s.completedAt >= startOfWeek) acc.weekTotal += s.count;
+        return acc;
+      },
+      { todayTotal: 0, weekTotal: 0 },
+    );
+  }, [state.history]);
 
   const value: DhikrContextValue = {
     state,
@@ -233,6 +257,8 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     active,
     progress,
     streak,
+    todayTotal,
+    weekTotal,
     hydrated,
     lang: state.language,
     t: getDict(state.language),
@@ -244,6 +270,14 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
         navigator.vibrate(18);
       }
       if (state.soundEnabled) playChime();
+      const next = state.count + by;
+      if (state.autoReset && state.count < state.target && next >= state.target) {
+        if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate([18, 60, 40]);
+        }
+        dispatch({ type: "complete" });
+        return;
+      }
       dispatch({ type: "increment", by });
     },
   };
