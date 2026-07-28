@@ -65,6 +65,9 @@
   --font-arabic: "Amiri", "Scheherazade New", serif;
   --font-sans: "Alegreya Sans", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Cormorant Garamond", serif;
+  --font-arabic-ui: "Noto Naskh Arabic", "Amiri", serif;
+  --font-urdu: "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
+
 }
 
 :root {
