@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from "react";
 import { DEFAULT_DHIKRS, DEFAULT_TARGET, type Dhikr } from "./dhikr-data";
+import { getDict, isRtl, LOCALES, type Language } from "./i18n";
 import type { Session } from "./export-history";
 
 const STORAGE_KEY = "dhikr-counter-app-state";
@@ -22,6 +23,7 @@ export type DhikrState = {
   soundEnabled: boolean;
   vibrationEnabled: boolean;
   darkMode: boolean;
+  language: Language;
 };
 
 const initialState: DhikrState = {
@@ -35,6 +37,7 @@ const initialState: DhikrState = {
   soundEnabled: true,
   vibrationEnabled: true,
   darkMode: true,
+  language: "en",
 };
 
 type Action =
@@ -49,7 +52,9 @@ type Action =
   | { type: "removePhrase"; id: string }
   | { type: "setNote"; note: string }
   | { type: "clearHistory" }
+  | { type: "setLanguage"; language: Language }
   | { type: "toggle"; key: "soundEnabled" | "vibrationEnabled" | "darkMode" };
+
 
 function reducer(state: DhikrState, action: Action): DhikrState {
   switch (action.type) {
