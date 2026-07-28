@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Minus, Plus, RotateCcw, Check } from "lucide-react";
 import { TasbihDial } from "@/components/TasbihDial";
 import { useDhikr } from "@/lib/dhikr-store";
+import { meaning } from "@/lib/dhikr-data";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,23 +25,30 @@ export const Route = createFileRoute("/")({
 });
 
 function CounterPage() {
-  const { state, dispatch, active, progress, tap } = useDhikr();
+  const { state, dispatch, active, progress, tap, t, lang } = useDhikr();
 
   return (
     <div className="space-y-8">
       <header className="text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          Current dhikr
+          {t.currentDhikr}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold">{active.transliteration}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{active.translation}</p>
+        <p className="font-arabic mt-3 text-4xl leading-relaxed text-gold" dir="rtl">
+          {active.arabic}
+        </p>
+        <h1 className="mt-2 text-2xl font-semibold" dir="ltr">
+          {active.transliteration}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {meaning(active, lang)}
+        </p>
       </header>
 
       <TasbihDial />
 
       <p className="text-center text-sm text-muted-foreground">
-        {progress.toFixed(0)}% complete
-        {state.count >= state.target ? " — target reached, alhamdulillah" : ""}
+        {t.percentComplete(Number(progress.toFixed(0)))}
+        {state.count >= state.target ? ` — ${t.targetReached}` : ""}
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-2">
@@ -76,7 +84,7 @@ function CounterPage() {
           className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-secondary"
         >
           <RotateCcw className="size-4" />
-          Reset counter
+          {t.resetCounter}
         </button>
         <button
           type="button"
@@ -85,7 +93,7 @@ function CounterPage() {
           className="inline-flex items-center gap-2 rounded-full border border-gold/50 px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold/10 disabled:opacity-40"
         >
           <Check className="size-4" />
-          Complete session
+          {t.completeSession}
         </button>
       </div>
 
@@ -94,14 +102,14 @@ function CounterPage() {
           htmlFor="session-note"
           className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
         >
-          Session note
+          {t.sessionNote}
         </label>
         <textarea
           id="session-note"
           rows={3}
           value={state.note}
           onChange={(e) => dispatch({ type: "setNote", note: e.target.value })}
-          placeholder="Record your intention or gratitude for this session"
+          placeholder={t.sessionNotePlaceholder}
           className="mt-3 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
