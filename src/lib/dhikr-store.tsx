@@ -6,7 +6,14 @@ import {
   useReducer,
   type ReactNode,
 } from "react";
-import { DEFAULT_DHIKRS, DEFAULT_TARGET, type Dhikr } from "./dhikr-data";
+import {
+  DEFAULT_DHIKRS,
+  DEFAULT_TARGET,
+  FATIMAH_ID,
+  FATIMAH_STEPS,
+  FATIMAH_TOTAL,
+  type Dhikr,
+} from "./dhikr-data";
 import { getDict, isRtl, LOCALES, type Language } from "./i18n";
 import type { Session } from "./export-history";
 
@@ -26,6 +33,8 @@ export type DhikrState = {
   darkMode: boolean;
   arabicScale: number;
   language: Language;
+  /** Current step of Tasbih Fatimah (0-2), used when the combined tasbih is active. */
+  fatimahStage: number;
 };
 
 const initialState: DhikrState = {
@@ -42,6 +51,7 @@ const initialState: DhikrState = {
   darkMode: true,
   arabicScale: 1,
   language: "en",
+  fatimahStage: 0,
 };
 
 type Action =
@@ -60,6 +70,8 @@ type Action =
   | { type: "setLanguage"; language: Language }
   | { type: "setArabicScale"; scale: number }
   | { type: "setDarkMode"; darkMode: boolean }
+  | { type: "fatimahNext" }
+  | { type: "fatimahFinish" }
   | { type: "resetAll" }
   | {
       type: "toggle";
@@ -107,6 +119,16 @@ function reducer(state: DhikrState, action: Action): DhikrState {
     case "setTarget":
       return { ...state, target: Math.max(1, action.target || 1) };
     case "select": {
+      if (action.id === FATIMAH_ID) {
+        return {
+          ...state,
+          selectedId: FATIMAH_ID,
+          fatimahStage: 0,
+          count: 0,
+          sessionStart: 0,
+          target: FATIMAH_STEPS[0].defaultTarget,
+        };
+      }
       const all = [...DEFAULT_DHIKRS, ...state.customPhrases];
       const dhikr = all.find((d) => d.id === action.id);
       return {
@@ -127,6 +149,7 @@ function reducer(state: DhikrState, action: Action): DhikrState {
           ? state.customPhrases
           : [...state.customPhrases, action.dhikr],
         selectedId: action.dhikr.id,
+        fatimahStage: 0,
         count: 0,
         sessionStart: 0,
         target: Math.max(1, action.target ?? action.dhikr.defaultTarget),
@@ -151,6 +174,36 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       return { ...state, arabicScale: action.scale };
     case "setDarkMode":
       return { ...state, darkMode: action.darkMode };
+    case "fatimahNext": {
+      const nextStage = Math.min(state.fatimahStage + 1, FATIMAH_STEPS.length - 1);
+      return {
+        ...state,
+        fatimahStage: nextStage,
+        count: 0,
+        target: FATIMAH_STEPS[nextStage].defaultTarget,
+      };
+    }
+    case "fatimahFinish": {
+      const start = state.sessionStart || Date.now();
+      const session: Session = {
+        id: `${Date.now()}`,
+        phrase: "Tasbih Fatimah",
+        arabic: FATIMAH_STEPS.map((s) => s.arabic).join(" · "),
+        count: FATIMAH_TOTAL,
+        target: FATIMAH_TOTAL,
+        note: "",
+        completedAt: Date.now(),
+        durationMinutes: Math.max(1, Math.round((Date.now() - start) / 60000)),
+      };
+      return {
+        ...state,
+        fatimahStage: 0,
+        count: 0,
+        sessionStart: 0,
+        target: FATIMAH_STEPS[0].defaultTarget,
+        history: [session, ...state.history],
+      };
+    }
     case "resetAll":
       return { ...initialState, language: state.language };
 
@@ -185,6 +238,10 @@ type DhikrContextValue = {
   phrases: Dhikr[];
   active: Dhikr;
   progress: number;
+  isFatimah: boolean;
+  fatimahStage: number;
+  fatimahSteps: Dhikr[];
+  fatimahTotal: number;
   streak: number;
   todayTotal: number;
   weekTotal: number;
@@ -249,8 +306,10 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     () => [...DEFAULT_DHIKRS, ...state.customPhrases],
     [state.customPhrases],
   );
-  const active =
-    phrases.find((p) => p.id === state.selectedId) ?? DEFAULT_DHIKRS[0];
+  const isFatimah = state.selectedId === FATIMAH_ID;
+  const active = isFatimah
+    ? FATIMAH_STEPS[Math.min(state.fatimahStage, FATIMAH_STEPS.length - 1)]
+    : (phrases.find((p) => p.id === state.selectedId) ?? DEFAULT_DHIKRS[0]);
   const progress =
     state.target > 0 ? Math.min((state.count / state.target) * 100, 100) : 0;
   const streak = useMemo(() => computeStreak(state.history), [state.history]);
@@ -278,6 +337,10 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     phrases,
     active,
     progress,
+    isFatimah,
+    fatimahStage: state.fatimahStage,
+    fatimahSteps: FATIMAH_STEPS,
+    fatimahTotal: FATIMAH_TOTAL,
     streak,
     todayTotal,
     weekTotal,
@@ -293,6 +356,26 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
       }
       if (state.soundEnabled) playChime();
       const next = state.count + by;
+      if (isFatimah) {
+        if (next >= state.target) {
+          if (
+            state.vibrationEnabled &&
+            typeof navigator !== "undefined" &&
+            navigator.vibrate
+          ) {
+            navigator.vibrate([18, 60, 40]);
+          }
+          dispatch({ type: "increment", by });
+          if (state.fatimahStage < FATIMAH_STEPS.length - 1) {
+            dispatch({ type: "fatimahNext" });
+          } else {
+            dispatch({ type: "fatimahFinish" });
+          }
+          return;
+        }
+        dispatch({ type: "increment", by });
+        return;
+      }
       if (state.autoReset && state.count < state.target && next >= state.target) {
         if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
           navigator.vibrate([18, 60, 40]);
