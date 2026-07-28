@@ -193,6 +193,13 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     document.documentElement.classList.toggle("dark", state.darkMode);
   }, [state.darkMode]);
 
+  const rtl = isRtl(state.language);
+
+  useEffect(() => {
+    document.documentElement.lang = state.language;
+    document.documentElement.dir = rtl ? "rtl" : "ltr";
+  }, [state.language, rtl]);
+
   const phrases = useMemo(
     () => [...DEFAULT_DHIKRS, ...state.customPhrases],
     [state.customPhrases],
@@ -211,6 +218,11 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     progress,
     streak,
     hydrated,
+    lang: state.language,
+    t: getDict(state.language),
+    rtl,
+    locale: LOCALES[state.language] ?? "en-US",
+    setLanguage: (language: Language) => dispatch({ type: "setLanguage", language }),
     tap: (by: number) => {
       if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
         navigator.vibrate(18);
@@ -219,6 +231,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
       dispatch({ type: "increment", by });
     },
   };
+
 
   return <DhikrContext.Provider value={value}>{children}</DhikrContext.Provider>;
 }
