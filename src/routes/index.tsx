@@ -113,6 +113,17 @@ function CounterPage() {
           className="mt-3 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
         />
       </div>
+
+      <blockquote className="text-center">
+        <p className="font-arabic text-xl leading-loose text-gold" dir="rtl">
+          {t.verseArabic}
+        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{t.verseText}</p>
+        <footer className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground/70">
+          {t.verseRef}
+        </footer>
+      </blockquote>
     </div>
   );
 }
+

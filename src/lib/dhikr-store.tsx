@@ -48,6 +48,7 @@ type Action =
   | { type: "complete" }
   | { type: "setTarget"; target: number }
   | { type: "select"; id: string }
+  | { type: "activate"; dhikr: Dhikr; target?: number }
   | { type: "addPhrase"; phrase: Dhikr }
   | { type: "removePhrase"; id: string }
   | { type: "setNote"; note: string }
@@ -104,6 +105,21 @@ function reducer(state: DhikrState, action: Action): DhikrState {
         count: 0,
         sessionStart: 0,
         target: dhikr?.defaultTarget ?? state.target,
+      };
+    }
+    case "activate": {
+      const known = [...DEFAULT_DHIKRS, ...state.customPhrases].some(
+        (d) => d.id === action.dhikr.id,
+      );
+      return {
+        ...state,
+        customPhrases: known
+          ? state.customPhrases
+          : [...state.customPhrases, action.dhikr],
+        selectedId: action.dhikr.id,
+        count: 0,
+        sessionStart: 0,
+        target: Math.max(1, action.target ?? action.dhikr.defaultTarget),
       };
     }
     case "addPhrase":

@@ -1,3 +1,5 @@
+import { EXTRA, type ExtraDict } from "./i18n-extra";
+
 export type Language = "en" | "ar" | "ur";
 
 export const LANGUAGES: { code: Language; label: string; native: string }[] = [
@@ -10,7 +12,7 @@ export const RTL_LANGUAGES: Language[] = ["ar", "ur"];
 
 export const isRtl = (lang: Language) => RTL_LANGUAGES.includes(lang);
 
-type Dict = {
+type BaseDict = {
   appName: string;
   language: string;
   chooseLanguage: string;
@@ -54,7 +56,9 @@ type Dict = {
   times: string;
 };
 
-const en: Dict = {
+type Dict = BaseDict & ExtraDict;
+
+const enBase: BaseDict = {
   appName: "Dhikr Counter",
   language: "Language",
   chooseLanguage: "Choose language",
@@ -96,7 +100,7 @@ const en: Dict = {
   times: "×",
 };
 
-const ar: Dict = {
+const arBase: BaseDict = {
   appName: "عدّاد الذكر",
   language: "اللغة",
   chooseLanguage: "اختر اللغة",
@@ -137,7 +141,7 @@ const ar: Dict = {
   times: "×",
 };
 
-const ur: Dict = {
+const urBase: BaseDict = {
   appName: "ذکر کاؤنٹر",
   language: "زبان",
   chooseLanguage: "زبان منتخب کریں",
@@ -179,9 +183,14 @@ const ur: Dict = {
   times: "×",
 };
 
-export const TRANSLATIONS: Record<Language, Dict> = { en, ar, ur };
+export const TRANSLATIONS: Record<Language, Dict> = {
+  en: { ...enBase, ...EXTRA.en },
+  ar: { ...arBase, ...EXTRA.ar },
+  ur: { ...urBase, ...EXTRA.ur },
+};
 
-export const getDict = (lang: Language): Dict => TRANSLATIONS[lang] ?? en;
+export const getDict = (lang: Language): Dict =>
+  TRANSLATIONS[lang] ?? TRANSLATIONS.en;
 
 export const LOCALES: Record<Language, string> = {
   en: "en-US",

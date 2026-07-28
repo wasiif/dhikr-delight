@@ -8,7 +8,15 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { Flame, CircleDot, History, Settings } from "lucide-react";
+import {
+  Flame,
+  CircleDot,
+  History,
+  Settings,
+  BookOpen,
+  Sparkles,
+  Sunrise,
+} from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -129,12 +137,17 @@ function RootShell({ children }: { children: ReactNode }) {
 
 const navItems = [
   { to: "/", key: "counter", icon: CircleDot },
+  { to: "/library", key: "library", icon: BookOpen },
+  { to: "/names", key: "names", icon: Sparkles },
+  { to: "/routine", key: "routine", icon: Sunrise },
   { to: "/history", key: "history", icon: History },
   { to: "/settings", key: "settings", icon: Settings },
 ] as const;
 
+
 function Chrome({ children }: { children: ReactNode }) {
   const { streak, t } = useDhikr();
+  const labels = { ...t.nav, ...t.nav2 } as Record<string, string>;
 
   return (
     <div className="girih min-h-screen bg-background">
@@ -159,7 +172,7 @@ function Chrome({ children }: { children: ReactNode }) {
                   activeProps={{ className: "text-gold font-medium" }}
                   activeOptions={{ exact: to === "/" }}
                 >
-                  {t.nav[key]}
+                  {labels[key]}
                 </Link>
               ))}
             </nav>
@@ -180,7 +193,7 @@ function Chrome({ children }: { children: ReactNode }) {
               activeOptions={{ exact: to === "/" }}
             >
               <Icon className="size-5" />
-              {t.nav[key]}
+              {labels[key]}
             </Link>
           ))}
         </div>
