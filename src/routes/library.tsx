@@ -161,7 +161,6 @@ function LibraryPage() {
                 <Tile
                   active={state.selectedId === item.id}
                   arabic={item.arabic}
-                  clamp={item.reciteOnce}
                   title={item.transliteration}
                   subtitle={tr(item.translations, lang)}
                   badge={
@@ -242,7 +241,6 @@ function Tile({
   badge,
   note,
   active,
-  clamp,
   onClick,
 }: {
   arabic: string;
@@ -251,7 +249,6 @@ function Tile({
   badge?: string;
   note?: string;
   active?: boolean;
-  clamp?: boolean;
   onClick: () => void;
 }) {
   return (
@@ -271,16 +268,16 @@ function Tile({
         <Star className="size-3.5" />
       </span>
       <span
-        className={`font-arabic text-2xl leading-relaxed text-gold ${clamp ? "line-clamp-3" : ""}`}
+        className="font-arabic line-clamp-2 text-2xl leading-relaxed text-gold"
         dir="rtl"
       >
         {arabic}
       </span>
       <span className="min-w-0">
-        <span className="block text-sm font-medium" dir="ltr">
+        <span className="block line-clamp-2 text-sm font-medium" dir="ltr">
           {title}
         </span>
-        <span className="mt-1 block line-clamp-3 text-xs text-muted-foreground">
+        <span className="mt-1 block line-clamp-2 text-xs text-muted-foreground">
           {subtitle}
         </span>
       </span>
@@ -291,7 +288,7 @@ function Tile({
           </span>
         )}
         {note && (
-          <span className="block text-[11px] leading-snug text-muted-foreground/80">
+          <span className="block line-clamp-2 text-[11px] leading-snug text-muted-foreground/80">
             {note}
           </span>
         )}
