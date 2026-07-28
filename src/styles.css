@@ -163,29 +163,28 @@
   }
 }
 
-/* Geometric eight-point star tessellation, drawn with gradients. */
+/* Eight-point star (khatim) lattice — low opacity, never behind body text directly. */
 @utility girih {
   background-image:
+    repeating-conic-gradient(
+      from 22.5deg at 50% 50%,
+      color-mix(in oklab, var(--gold) 7%, transparent) 0deg 4deg,
+      transparent 4deg 45deg
+    ),
     repeating-linear-gradient(
       45deg,
-      color-mix(in oklab, var(--gold) 9%, transparent) 0 1px,
-      transparent 1px 34px
+      color-mix(in oklab, var(--gold) 6%, transparent) 0 1px,
+      transparent 1px 48px
     ),
     repeating-linear-gradient(
       -45deg,
-      color-mix(in oklab, var(--gold) 9%, transparent) 0 1px,
-      transparent 1px 34px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      color-mix(in oklab, var(--gold) 5%, transparent) 0 1px,
-      transparent 1px 48px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      color-mix(in oklab, var(--gold) 5%, transparent) 0 1px,
+      color-mix(in oklab, var(--gold) 6%, transparent) 0 1px,
       transparent 1px 48px
     );
+  background-size:
+    96px 96px,
+    auto,
+    auto;
 }
 
 @utility bead-pulse {
@@ -208,5 +207,67 @@
   box-shadow:
     0 0 0 1px color-mix(in oklab, var(--gold) 60%, transparent),
     0 0 48px -6px color-mix(in oklab, var(--gold) 55%, transparent);
+  animation: completion-breathe 3.2s ease-in-out infinite;
 }
+
+@keyframes completion-breathe {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--gold) 45%, transparent),
+      0 0 32px -10px color-mix(in oklab, var(--gold) 45%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--gold) 70%, transparent),
+      0 0 60px -4px color-mix(in oklab, var(--gold) 65%, transparent);
+  }
+}
+
+/* Gentle gold shimmer sweep for milestone completions. */
+@utility shimmer-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  pointer-events: none;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: linear-gradient(
+      110deg,
+      transparent 40%,
+      color-mix(in oklab, var(--gold) 30%, transparent) 50%,
+      transparent 60%
+    );
+    animation: shimmer-sweep 2.4s ease-in-out infinite;
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-60%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(60%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 

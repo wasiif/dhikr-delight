@@ -45,6 +45,9 @@ export function TasbihDial() {
         />
       </svg>
 
+      {complete ? <span className="shimmer-sweep" aria-hidden="true" /> : null}
+
+
       <span className="relative flex flex-col items-center gap-1 px-8 text-center">
         <span className="font-arabic text-3xl leading-tight text-gold">
           {active.arabic}
