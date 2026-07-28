@@ -5,11 +5,10 @@ export type Language = "en" | "ar" | "ur";
 
 export const LANGUAGES: { code: Language; label: string; native: string }[] = [
   { code: "en", label: "English", native: "English" },
-  { code: "ar", label: "Arabic", native: "العربية" },
   { code: "ur", label: "Urdu", native: "اردو" },
 ];
 
-export const RTL_LANGUAGES: Language[] = ["ar", "ur"];
+export const RTL_LANGUAGES: Language[] = ["ur"];
 
 export const isRtl = (lang: Language) => RTL_LANGUAGES.includes(lang);
 
