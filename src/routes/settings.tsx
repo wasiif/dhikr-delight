@@ -5,25 +5,27 @@ import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
+const S_TITLE = "Settings — Customize Your Tasbih Counter";
+const S_DESC =
+  "Set your language, light or night theme, app text size and default target, add custom adhkar, and tune sound and haptic feedback.";
+
 export const Route = createFileRoute("/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Dhikr Counter" },
-      {
-        name: "description",
-        content:
-          "Choose your language, theme, Arabic text size and target, add custom adhkar and tune sound and haptics.",
-      },
-      { property: "og:title", content: "Settings — Dhikr Counter" },
-      {
-        property: "og:description",
-        content:
-          "Choose your language, theme, Arabic text size and target, add custom adhkar and tune sound and haptics.",
-      },
+      { title: S_TITLE },
+      { name: "description", content: S_DESC },
+      { property: "og:title", content: S_TITLE },
+      { property: "og:description", content: S_DESC },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/settings" },
+      { name: "twitter:title", content: S_TITLE },
+      { name: "twitter:description", content: S_DESC },
     ],
+    links: [{ rel: "canonical", href: "/settings" }],
   }),
   component: SettingsPage,
 });
+
 
 function SettingsPage() {
   const { state, dispatch, phrases, t, lang } = useDhikr();
