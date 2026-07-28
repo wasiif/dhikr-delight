@@ -274,10 +274,10 @@ function Tile({
         {arabic}
       </span>
       <span className="min-w-0">
-        <span className="block line-clamp-2 text-sm font-medium" dir="ltr">
+        <span className="line-clamp-2 text-sm font-medium" dir="ltr">
           {title}
         </span>
-        <span className="mt-1 block line-clamp-2 text-xs text-muted-foreground">
+        <span className="mt-1 line-clamp-2 text-xs text-muted-foreground">
           {subtitle}
         </span>
       </span>
@@ -288,7 +288,7 @@ function Tile({
           </span>
         )}
         {note && (
-          <span className="block line-clamp-2 text-[11px] leading-snug text-muted-foreground/80">
+          <span className="line-clamp-2 text-[11px] leading-snug text-muted-foreground/80">
             {note}
           </span>
         )}
