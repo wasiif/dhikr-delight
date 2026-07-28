@@ -1,4 +1,5 @@
 import { EXTRA, type ExtraDict } from "./i18n-extra";
+import { POLISH, type PolishDict } from "./i18n-polish";
 
 export type Language = "en" | "ar" | "ur";
 
@@ -56,7 +57,7 @@ type BaseDict = {
   times: string;
 };
 
-type Dict = BaseDict & ExtraDict;
+type Dict = BaseDict & ExtraDict & PolishDict;
 
 const enBase: BaseDict = {
   appName: "Dhikr Counter",
@@ -184,9 +185,9 @@ const urBase: BaseDict = {
 };
 
 export const TRANSLATIONS: Record<Language, Dict> = {
-  en: { ...enBase, ...EXTRA.en },
-  ar: { ...arBase, ...EXTRA.ar },
-  ur: { ...urBase, ...EXTRA.ur },
+  en: { ...enBase, ...EXTRA.en, ...POLISH.en },
+  ar: { ...arBase, ...EXTRA.ar, ...POLISH.ar },
+  ur: { ...urBase, ...EXTRA.ur, ...POLISH.ur },
 };
 
 export const getDict = (lang: Language): Dict =>
