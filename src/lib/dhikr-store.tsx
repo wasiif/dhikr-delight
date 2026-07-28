@@ -24,6 +24,7 @@ export type DhikrState = {
   vibrationEnabled: boolean;
   autoReset: boolean;
   darkMode: boolean;
+  arabicScale: number;
   language: Language;
 };
 
@@ -39,6 +40,7 @@ const initialState: DhikrState = {
   vibrationEnabled: true,
   autoReset: false,
   darkMode: true,
+  arabicScale: 1,
   language: "en",
 };
 
@@ -56,6 +58,9 @@ type Action =
   | { type: "setNote"; note: string }
   | { type: "clearHistory" }
   | { type: "setLanguage"; language: Language }
+  | { type: "setArabicScale"; scale: number }
+  | { type: "setDarkMode"; darkMode: boolean }
+  | { type: "resetAll" }
   | {
       type: "toggle";
       key: "soundEnabled" | "vibrationEnabled" | "autoReset" | "darkMode";
@@ -142,6 +147,12 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       return { ...state, history: [] };
     case "setLanguage":
       return { ...state, language: action.language };
+    case "setArabicScale":
+      return { ...state, arabicScale: action.scale };
+    case "setDarkMode":
+      return { ...state, darkMode: action.darkMode };
+    case "resetAll":
+      return { ...initialState, language: state.language };
 
     case "toggle":
       return { ...state, [action.key]: !state[action.key] };
@@ -215,6 +226,13 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", state.darkMode);
   }, [state.darkMode]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--arabic-scale",
+      String(state.arabicScale),
+    );
+  }, [state.arabicScale]);
 
   const rtl = isRtl(state.language);
 
