@@ -43,7 +43,12 @@ function LibraryPage() {
   // Paint the first tab immediately, then warm the heavier chunks in the background.
   useEffect(() => {
     setReady(true);
+    const warm = () => {
+      void import("@/components/library/NamesGrid");
+      void import("@/components/library/DuasSection");
+    };
     const w = window as unknown as {
+
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (h: number) => void;
       setTimeout: (cb: () => void, ms: number) => number;
