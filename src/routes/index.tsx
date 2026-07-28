@@ -90,29 +90,21 @@ function CounterPage() {
       ) : null}
 
       <div className="flex flex-wrap items-center justify-center gap-2">
-        {[5, 1].map((n) => (
-          <button
-            key={`minus-${n}`}
-            type="button"
-            onClick={() => dispatch({ type: "decrement", by: n })}
-            disabled={state.count === 0}
-            className="inline-flex min-h-11 min-w-14 items-center justify-center gap-1 rounded-full border border-border px-4 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
-          >
-            <Minus className="size-3.5" />
-            {n}
-          </button>
-        ))}
-        {[1, 5, 10].map((n) => (
-          <button
-            key={`plus-${n}`}
-            type="button"
-            onClick={() => tap(n)}
-            className="inline-flex min-h-11 min-w-16 items-center justify-center gap-1 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            <Plus className="size-3.5" />
-            {n}
-          </button>
-        ))}
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "decrement", by: 1 })}
+          disabled={state.count === 0}
+          className="inline-flex min-h-11 min-w-14 items-center justify-center gap-1 rounded-full border border-border px-4 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+        >
+          <Minus className="size-3.5" />1
+        </button>
+        <button
+          type="button"
+          onClick={() => tap(1)}
+          className="inline-flex min-h-11 min-w-16 items-center justify-center gap-1 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+        >
+          <Plus className="size-3.5" />1
+        </button>
       </div>
 
       <div className="flex flex-wrap justify-center gap-3">
@@ -124,15 +116,6 @@ function CounterPage() {
         >
           <RotateCcw className="size-4" />
           {t.resetCounter}
-        </button>
-        <button
-          type="button"
-          onClick={() => dispatch({ type: "complete" })}
-          disabled={state.count === 0}
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-gold/50 px-5 text-sm font-medium text-gold transition-colors hover:bg-gold/10 disabled:opacity-40"
-        >
-          <Check className="size-4" />
-          {t.completeSession}
         </button>
       </div>
 
