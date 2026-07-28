@@ -24,7 +24,8 @@ export const Route = createFileRoute("/history")({
 });
 
 function HistoryPage() {
-  const { state, dispatch, hydrated, t, locale } = useDhikr();
+  const { state, dispatch, hydrated, t, locale, todayTotal, weekTotal, streak } =
+    useDhikr();
 
   const grouped = state.history.reduce<Record<string, typeof state.history>>(
     (acc, session) => {
@@ -39,14 +40,45 @@ function HistoryPage() {
     {},
   );
 
+  const stats = [
+    { label: t.today, value: `${todayTotal}`, unit: t.totalCounts },
+    { label: t.thisWeek, value: `${weekTotal}`, unit: t.totalCounts },
+    { label: t.streakLabel, value: `${streak}`, unit: t.streak(streak) },
+  ];
+
+  if (!hydrated) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-sm text-muted-foreground">{t.loading}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
       <header>
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
           {t.record}
         </p>
         <h1 className="mt-2 text-3xl font-semibold">{t.sessionHistory}</h1>
       </header>
+
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {stats.map((s) => (
+          <div
+            key={s.label}
+            className="rounded-2xl border border-border/70 bg-card/60 p-4 text-center shadow-sm"
+          >
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              {s.label}
+            </p>
+            <p className="mt-2 text-3xl font-semibold tabular-nums text-gold" dir="ltr">
+              {s.value}
+            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{s.unit}</p>
+          </div>
+        ))}
+      </section>
 
       <div className="flex flex-wrap gap-2">
         <button
@@ -75,10 +107,11 @@ function HistoryPage() {
         </button>
       </div>
 
-      {hydrated && !state.history.length ? (
-        <p className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
-          {t.emptyHistory}
-        </p>
+      {!state.history.length ? (
+        <div className="rounded-2xl border border-dashed border-border p-10 text-center animate-fade-in">
+          <p className="text-sm text-muted-foreground">{t.emptyHistory}</p>
+          <p className="mt-2 text-xs text-muted-foreground/70">{t.noStatsYet}</p>
+        </div>
       ) : null}
 
       <div className="space-y-8">
@@ -90,7 +123,7 @@ function HistoryPage() {
             {sessions.map((session) => (
               <article
                 key={session.id}
-                className="rounded-xl border border-border/70 bg-card/60 p-4"
+                className="rounded-2xl border border-border/70 bg-card/60 p-4 shadow-sm transition-colors hover:border-gold/40"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>

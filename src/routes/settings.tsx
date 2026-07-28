@@ -55,11 +55,12 @@ function SettingsPage() {
   const toggles = [
     { key: "soundEnabled", label: t.soundFeedback },
     { key: "vibrationEnabled", label: t.vibration },
+    { key: "autoReset", label: t.autoReset },
     { key: "darkMode", label: t.nightTheme },
   ] as const;
 
   return (
-    <div className="space-y-10">
+    <div className="mx-auto max-w-2xl space-y-10 animate-fade-in">
       <header>
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
           {t.settings}
