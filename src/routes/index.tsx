@@ -43,13 +43,9 @@ function CounterPage() {
   const complete = state.count >= state.target;
 
   if (!hydrated) {
-    return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 animate-fade-in">
-        <span className="size-16 animate-[pulse_2s_ease-in-out_infinite] rounded-full border-2 border-gold/40" />
-        <p className="text-sm text-muted-foreground">{t.loading}</p>
-      </div>
-    );
+    return <CounterSkeleton />;
   }
+
 
   return (
     <div className="mx-auto max-w-xl space-y-8 animate-fade-in">
