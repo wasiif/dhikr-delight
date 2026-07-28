@@ -1,24 +1,110 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Minus, Plus, RotateCcw, Check } from "lucide-react";
+import { TasbihDial } from "@/components/TasbihDial";
+import { useDhikr } from "@/lib/dhikr-store";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Tasbih Counter — Dhikr Counter" },
+      {
+        name: "description",
+        content:
+          "Tap the tasbih dial to count your dhikr, set a target and save the session with a note.",
+      },
+      { property: "og:title", content: "Tasbih Counter — Dhikr Counter" },
+      {
+        property: "og:description",
+        content:
+          "Tap the tasbih dial to count your dhikr, set a target and save the session with a note.",
+      },
+    ],
+  }),
+  component: CounterPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function CounterPage() {
+  const { state, dispatch, active, progress, tap } = useDhikr();
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="space-y-8">
+      <header className="text-center">
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+          Current dhikr
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold">{active.transliteration}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{active.translation}</p>
+      </header>
+
+      <TasbihDial />
+
+      <p className="text-center text-sm text-muted-foreground">
+        {progress.toFixed(0)}% complete
+        {state.count >= state.target ? " — target reached, alhamdulillah" : ""}
+      </p>
+
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {[5, 1].map((n) => (
+          <button
+            key={`minus-${n}`}
+            type="button"
+            onClick={() => dispatch({ type: "decrement", by: n })}
+            disabled={state.count === 0}
+            className="inline-flex items-center gap-1 rounded-full border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+          >
+            <Minus className="size-3.5" />
+            {n}
+          </button>
+        ))}
+        {[1, 5, 10].map((n) => (
+          <button
+            key={`plus-${n}`}
+            type="button"
+            onClick={() => tap(n)}
+            className="inline-flex items-center gap-1 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            <Plus className="size-3.5" />
+            {n}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "reset" })}
+          className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2 text-sm transition-colors hover:bg-secondary"
+        >
+          <RotateCcw className="size-4" />
+          Reset counter
+        </button>
+        <button
+          type="button"
+          onClick={() => dispatch({ type: "complete" })}
+          disabled={state.count === 0}
+          className="inline-flex items-center gap-2 rounded-full border border-gold/50 px-5 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold/10 disabled:opacity-40"
+        >
+          <Check className="size-4" />
+          Complete session
+        </button>
+      </div>
+
+      <div className="rounded-xl border border-border/70 bg-card/60 p-5">
+        <label
+          htmlFor="session-note"
+          className="text-xs uppercase tracking-[0.2em] text-muted-foreground"
+        >
+          Session note
+        </label>
+        <textarea
+          id="session-note"
+          rows={3}
+          value={state.note}
+          onChange={(e) => dispatch({ type: "setNote", note: e.target.value })}
+          placeholder="Record your intention or gratitude for this session"
+          className="mt-3 w-full resize-none rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
+        />
+      </div>
     </div>
   );
 }
