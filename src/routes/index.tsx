@@ -26,7 +26,19 @@ export const Route = createFileRoute("/")({
 });
 
 function CounterPage() {
-  const { state, dispatch, active, progress, tap, t, lang, hydrated } = useDhikr();
+  const {
+    state,
+    dispatch,
+    active,
+    progress,
+    tap,
+    t,
+    lang,
+    hydrated,
+    isFatimah,
+    fatimahStage,
+    fatimahSteps,
+  } = useDhikr();
   const [confirmReset, setConfirmReset] = useState(false);
   const complete = state.count >= state.target;
 
@@ -43,7 +55,7 @@ function CounterPage() {
     <div className="mx-auto max-w-xl space-y-8 animate-fade-in">
       <header className="text-center">
         <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          {t.currentDhikr}
+          {isFatimah ? t.fatimahTitle : t.currentDhikr}
         </p>
         <p className="font-arabic mt-3 text-4xl leading-relaxed text-gold" dir="rtl">
           {active.arabic}
@@ -56,7 +68,33 @@ function CounterPage() {
         </p>
       </header>
 
+      {isFatimah ? (
+        <div className="mx-auto flex max-w-sm items-center justify-center gap-2">
+          {fatimahSteps.map((step, i) => (
+            <span
+              key={step.id}
+              className={`flex-1 rounded-full border px-2 py-1 text-center text-[11px] transition-colors ${
+                i === fatimahStage
+                  ? "border-gold/60 bg-gold/10 text-gold"
+                  : i < fatimahStage
+                    ? "border-gold/30 text-gold/60"
+                    : "border-border/60 text-muted-foreground"
+              }`}
+              dir="ltr"
+            >
+              {step.transliteration} × {step.defaultTarget}
+            </span>
+          ))}
+        </div>
+      ) : null}
+
       <TasbihDial />
+
+      {isFatimah ? (
+        <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
+          {t.fatimahStage(fatimahStage + 1, fatimahSteps.length)}
+        </p>
+      ) : null}
 
       <p className="text-center text-sm tabular-nums text-muted-foreground" dir="ltr">
         {t.countProgress(state.count, state.target)} ·{" "}

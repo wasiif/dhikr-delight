@@ -100,3 +100,17 @@ export const DEFAULT_DHIKRS: Dhikr[] = [
   },
 ];
 
+
+/** Tasbih Fatimah: 33 SubhanAllah → 33 Alhamdulillah → 34 Allahu Akbar = 100. */
+export const FATIMAH_ID = "tasbih-fatimah";
+
+export const FATIMAH_STEPS: Dhikr[] = [
+  DEFAULT_DHIKRS[0],
+  DEFAULT_DHIKRS[1],
+  DEFAULT_DHIKRS[2],
+];
+
+export const FATIMAH_TOTAL = FATIMAH_STEPS.reduce(
+  (sum, s) => sum + s.defaultTarget,
+  0,
+);

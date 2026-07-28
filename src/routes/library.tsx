@@ -1,7 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
-import { DEFAULT_DHIKRS, meaning } from "@/lib/dhikr-data";
+import {
+  DEFAULT_DHIKRS,
+  FATIMAH_ID,
+  FATIMAH_STEPS,
+  FATIMAH_TOTAL,
+  meaning,
+} from "@/lib/dhikr-data";
 
 export const Route = createFileRoute("/library")({
   head: () => ({
@@ -36,6 +42,40 @@ function LibraryPage() {
         <h1 className="mt-2 text-3xl font-semibold">{t.libraryTitle}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t.libraryIntro}</p>
       </header>
+
+      <section className="rounded-2xl border border-gold/40 bg-card/70 p-5 shadow-sm">
+        <h2 className="text-lg font-semibold text-gold">{t.fatimahTitle}</h2>
+        <p className="mt-1 text-sm text-muted-foreground">{t.fatimahDesc}</p>
+        <ol className="mt-4 space-y-1 text-sm" dir="ltr">
+          {FATIMAH_STEPS.map((step, i) => (
+            <li key={step.id} className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">{i + 1}.</span>
+              <span className="font-arabic text-lg text-gold" dir="rtl">
+                {step.arabic}
+              </span>
+              <span className="text-muted-foreground">
+                {step.transliteration} × {step.defaultTarget}
+              </span>
+            </li>
+          ))}
+        </ol>
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-gold/40 px-3 py-1 text-xs text-gold">
+            {t.fatimahTotal} ({FATIMAH_TOTAL})
+          </span>
+          <button
+            type="button"
+            onClick={() => {
+              dispatch({ type: "select", id: FATIMAH_ID });
+              navigate({ to: "/" });
+            }}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            {state.selectedId === FATIMAH_ID && <Check className="size-3.5" />}
+            {state.selectedId === FATIMAH_ID ? t.activeNow : t.setActive}
+          </button>
+        </div>
+      </section>
 
       <ul className="space-y-4">
         {DEFAULT_DHIKRS.map((d) => {

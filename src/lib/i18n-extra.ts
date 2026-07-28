@@ -28,6 +28,13 @@ export type ExtraDict = {
   restart: string;
   repeat: string;
 
+  // tasbih fatimah
+  fatimahTitle: string;
+  fatimahDesc: string;
+  fatimahStage: (a: number, b: number) => string;
+  fatimahComplete: string;
+  fatimahTotal: string;
+
   // micro-copy
   verseArabic: string;
   verseText: string;
@@ -58,6 +65,12 @@ export const EXTRA: Record<Language, ExtraDict> = {
     routineComplete: "Routine complete — may it be accepted.",
     restart: "Start again",
     repeat: "Repeat",
+    fatimahTitle: "Tasbih Fatimah",
+    fatimahDesc:
+      "33 SubhanAllah, then 33 Alhamdulillah, then 34 Allahu Akbar — 100 counts, one complete tasbih.",
+    fatimahStage: (a, b) => `Part ${a} of ${b}`,
+    fatimahComplete: "Tasbih Fatimah complete — 100 counts.",
+    fatimahTotal: "100 total",
     verseArabic: "أَلَا بِذِكْرِ ٱللَّٰهِ تَطْمَئِنُّ ٱلْقُلُوبُ",
     verseText: "Verily, in the remembrance of Allah do hearts find rest.",
     verseRef: "Qur'an 13:28",
@@ -86,6 +99,12 @@ export const EXTRA: Record<Language, ExtraDict> = {
     routineComplete: "تم الورد، تقبل الله.",
     restart: "ابدأ من جديد",
     repeat: "كرر",
+    fatimahTitle: "تسبيح فاطمة",
+    fatimahDesc:
+      "٣٣ سبحان الله، ثم ٣٣ الحمد لله، ثم ٣٤ الله أكبر — مئة تسبيحة كاملة.",
+    fatimahStage: (a, b) => `الجزء ${a} من ${b}`,
+    fatimahComplete: "اكتمل تسبيح فاطمة — مئة تسبيحة.",
+    fatimahTotal: "المجموع ١٠٠",
     verseArabic: "أَلَا بِذِكْرِ ٱللَّٰهِ تَطْمَئِنُّ ٱلْقُلُوبُ",
     verseText: "ألا بذكر الله تطمئن القلوب.",
     verseRef: "الرعد: ٢٨",
@@ -114,6 +133,12 @@ export const EXTRA: Record<Language, ExtraDict> = {
     routineComplete: "اذکار مکمل ہوئے — اللہ قبول فرمائے۔",
     restart: "دوبارہ شروع کریں",
     repeat: "دہرائیں",
+    fatimahTitle: "تسبیحِ فاطمہ",
+    fatimahDesc:
+      "۳۳ بار سبحان اللہ، پھر ۳۳ بار الحمد للہ، پھر ۳۴ بار اللہ اکبر — کل ۱۰۰، ایک مکمل تسبیح۔",
+    fatimahStage: (a, b) => `حصہ ${a} از ${b}`,
+    fatimahComplete: "تسبیحِ فاطمہ مکمل — ۱۰۰ شمار۔",
+    fatimahTotal: "کل ۱۰۰",
     verseArabic: "أَلَا بِذِكْرِ ٱللَّٰهِ تَطْمَئِنُّ ٱلْقُلُوبُ",
     verseText: "سن لو! اللہ کے ذکر سے ہی دلوں کو اطمینان ملتا ہے۔",
     verseRef: "الرعد ۲۸",
