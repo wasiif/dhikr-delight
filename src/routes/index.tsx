@@ -7,25 +7,89 @@ import { CounterSkeleton } from "@/components/Skeletons";
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 
+const HOME_TITLE = "Digital Tasbih Counter — Free Online Dhikr Counter";
+const HOME_DESC =
+  "Free digital tasbih counter for daily dhikr: tap or swipe to count, set targets like 33, 99 and 100, follow Tasbih Fatimah, and track streaks — works offline in your browser.";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tasbih Counter — Dhikr Counter" },
+      { title: HOME_TITLE },
+      { name: "description", content: HOME_DESC },
       {
-        name: "description",
+        name: "keywords",
         content:
-          "Tap the tasbih dial to count your dhikr, set a target and save the session with a note.",
+          "tasbih counter, digital tasbih, dhikr counter, online tasbeeh, misbaha, zikr counter, tasbih fatimah, 99 names of allah",
       },
-      { property: "og:title", content: "Tasbih Counter — Dhikr Counter" },
+      { property: "og:title", content: HOME_TITLE },
+      { property: "og:description", content: HOME_DESC },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { name: "twitter:title", content: HOME_TITLE },
+      { name: "twitter:description", content: HOME_DESC },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+    scripts: [
       {
-        property: "og:description",
-        content:
-          "Tap the tasbih dial to count your dhikr, set a target and save the session with a note.",
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Dhikr Counter — Digital Tasbih",
+          applicationCategory: "LifestyleApplication",
+          operatingSystem: "Any (web browser)",
+          browserRequirements: "Requires JavaScript",
+          description: HOME_DESC,
+          inLanguage: ["en", "ur"],
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          featureList: [
+            "Tap and swipe dhikr counting",
+            "Custom targets (33, 99, 100, 1000)",
+            "Tasbih Fatimah sequence",
+            "99 Names of Allah",
+            "Morning and evening adhkar",
+            "Session history and streaks",
+          ],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "What is a digital tasbih counter?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "A digital tasbih is an online version of prayer beads (misbaha). You tap the dial to count each dhikr, and the app tracks your progress toward a target such as 33, 99 or 100.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What is Tasbih Fatimah?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Tasbih Fatimah is SubhanAllah 33 times, Alhamdulillah 33 times and Allahu Akbar 34 times — 100 in total. The counter advances through each phrase automatically.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Does the dhikr counter work offline?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. Counts, targets and history are stored locally in your browser, so no account is needed and your data stays on your device.",
+              },
+            },
+          ],
+        }),
       },
     ],
   }),
   component: CounterPage,
 });
+
 
 function CounterPage() {
   const {
