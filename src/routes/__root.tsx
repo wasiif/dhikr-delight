@@ -129,9 +129,13 @@ function RootShell({ children }: { children: ReactNode }) {
 
 const navItems = [
   { to: "/", key: "counter", icon: CircleDot },
+  { to: "/library", key: "library", icon: BookOpen },
+  { to: "/names", key: "names", icon: Sparkles },
+  { to: "/routine", key: "routine", icon: Sunrise },
   { to: "/history", key: "history", icon: History },
   { to: "/settings", key: "settings", icon: Settings },
 ] as const;
+
 
 function Chrome({ children }: { children: ReactNode }) {
   const { streak, t } = useDhikr();
