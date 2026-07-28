@@ -72,4 +72,28 @@ export const DEFAULT_DHIKRS: Dhikr[] = [
     },
     defaultTarget: 100,
   },
+  {
+    id: "salawat",
+    arabic: "ٱللَّٰهُمَّ صَلِّ عَلَىٰ مُحَمَّدٍ",
+    transliteration: "Allahumma salli 'ala Muhammad",
+    translations: {
+      en: "O Allah, send blessings upon Muhammad",
+      ar: "اللهم صل على محمد",
+      ur: "اے اللہ! محمد ﷺ پر رحمت نازل فرما",
+    },
+    defaultTarget: 10,
+    customizableTarget: true,
+  },
+  {
+    id: "la-hawla",
+    arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ",
+    transliteration: "La hawla wa la quwwata illa billah",
+    translations: {
+      en: "There is no might nor power except with Allah",
+      ar: "لا حول ولا قوة إلا بالله",
+      ur: "نہ کوئی طاقت ہے نہ قوت مگر اللہ کی مدد سے",
+    },
+    defaultTarget: 100,
+  },
 ];
+
