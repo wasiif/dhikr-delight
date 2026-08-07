@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { DhikrProvider, useDhikr } from "../lib/dhikr-store";
 import { SplashScreen } from "../components/SplashScreen";
 
@@ -48,7 +47,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    // Error reporting removed
   }, [error]);
 
   return (
@@ -115,7 +114,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@500;600;700&family=Alegreya+Sans:wght@400;500;700&family=Noto+Naskh+Arabic:wght@400;500;700&family=Noto+Nastaliq+Urdu:wght@400;500;700&display=swap",
       },
 
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
     scripts: [
       {
