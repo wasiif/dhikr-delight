@@ -4,7 +4,7 @@ A calm, Islamic-inspired digital tasbih (misbaha) for daily dhikr. Tap or swipe 
 count, follow guided sequences like Tasbih Fatimah, browse the 99 Names of Allah and
 morning/evening adhkar, and track your daily streak — all offline in the browser.
 
-Built with [Lovable](https://lovable.dev) on TanStack Start.
+Built on TanStack Start.
 
 ---
 

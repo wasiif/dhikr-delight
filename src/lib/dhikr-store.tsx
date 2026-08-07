@@ -266,7 +266,6 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed?.language === "ar") parsed.language = "en";
         dispatch({ type: "hydrate", state: parsed });
       }
     } catch {

@@ -7,7 +7,7 @@ import { CounterSkeleton } from "@/components/Skeletons";
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 
-const HOME_TITLE = "Digital Tasbih Counter — Free Online Dhikr Counter";
+const HOME_TITLE = "Digital Tasbih Counter — Online Dhikr Counter";
 const HOME_DESC =
   "Free digital tasbih counter for daily dhikr: tap or swipe to count, set targets like 33, 99 and 100, follow Tasbih Fatimah, and track streaks — works offline in your browser.";
 
