@@ -6,7 +6,7 @@ A calm, Islamic-inspired digital tasbih (misbaha) for daily dhikr. Tap or swipe 
 count, follow guided sequences like Tasbih Fatimah, browse the 99 Names of Allah and
 morning/evening adhkar, and track your daily streak — all offline in the browser.
 
-Built on TanStack Start.
+Built with React + Vite (routing handled by react-router-dom).
 
 ---
 
@@ -25,11 +25,11 @@ Built on TanStack Start.
 
 ## Tech stack
 
-- **Framework**: TanStack Start v1 (React 19, SSR) + TanStack Router file-based routing
-- **Build**: Vite 7
-- **Styling**: Tailwind CSS v4 (`src/styles.css`, OKLCH design tokens) + shadcn/ui primitives
+- **Framework / routing**: React 19 with `react-router-dom` (BrowserRouter)
+- **Build**: Vite
+- **Styling**: Tailwind CSS (`src/styles.css`, OKLCH design tokens) + shadcn/ui primitives
 - **State**: React Context + `useReducer` (`src/lib/dhikr-store.tsx`), persisted to `localStorage`
-- **Icons**: lucide-react
+- **Notable libs**: lucide-react (icons), @tanstack/react-query (optional data utilities)
 - **Fonts**: Amiri (Arabic), Cormorant Garamond (headings), Alegreya Sans (UI), Noto Nastaliq Urdu
 
 ## Getting started
@@ -57,30 +57,29 @@ Scripts:
 
 ```text
 src/
-  routes/                 file-based routes (URL = filename)
-    __root.tsx            html shell, head defaults, header + nav, providers
-    index.tsx             counter screen ("/")
-    library.tsx           library with Tasbihs / Names / Duas tabs
-    history.tsx           sessions, stats, export
-    settings.tsx          preferences + about
-    sitemap[.]xml.ts      server route emitting /sitemap.xml
+  App.tsx                 # app root (routing wired with react-router-dom)
+  routes/                 # route components (imported and mounted in App.tsx)
+    index.tsx             # counter screen ("/")
+    library.tsx           # library with Tasbihs / Names / Duas tabs
+    history.tsx           # sessions, stats, export
+    settings.tsx          # preferences + about
   components/
-    TasbihDial.tsx        SVG progress ring, tap + swipe handling
-    SplashScreen.tsx      shown until state hydrates
-    Skeletons.tsx         loading placeholders
-    LanguageSwitcher.tsx  language control (settings only)
-    library/              LibraryTile, NamesGrid (lazy), DuasSection (lazy)
+    TasbihDial.tsx        # SVG progress ring, tap + swipe handling
+    SplashScreen.tsx      # shown until state hydrates
+    Skeletons.tsx         # loading placeholders
+    LanguageSwitcher.tsx  # language control (settings only)
+    library/              # LibraryTile, NamesGrid (lazy), DuasSection (lazy)
   lib/
-    dhikr-store.tsx       reducer, persistence, sound/haptics, language + theme
-    dhikr-data.ts         default adhkar, Tasbih Fatimah steps
-    tasbih-collection.ts  named tasbihs with references
-    asma-data.ts          99 Names of Allah
-    routine-data.ts       morning & evening adhkar
-    i18n*.ts              translation dictionaries
-    export-history.ts     JSON / CSV export
-  styles.css              theme tokens, girih pattern, animations, RTL utilities
+    dhikr-store.tsx       # reducer, persistence, sound/haptics, language + theme
+    dhikr-data.ts         # default adhkar, Tasbih Fatimah steps
+    tasbih-collection.ts  # named tasbihs with references
+    asma-data.ts          # 99 Names of Allah
+    routine-data.ts       # morning & evening adhkar
+    i18n*.ts              # translation dictionaries
+    export-history.ts     # JSON / CSV export
+  styles.css              # theme tokens, girih pattern, animations, RTL utilities
 public/
-  robots.txt              crawler rules
+  robots.txt              # crawler rules
 ```
 
 Full architecture notes: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
