@@ -1,5 +1,7 @@
 # Dhikr Counter — Digital Tasbih
 
+Live demo: https://dhikr-delight.vercel.app/
+
 A calm, Islamic-inspired digital tasbih (misbaha) for daily dhikr. Tap or swipe to
 count, follow guided sequences like Tasbih Fatimah, browse the 99 Names of Allah and
 morning/evening adhkar, and track your daily streak — all offline in the browser.
@@ -35,8 +37,8 @@ Built on TanStack Start.
 Requires Node.js 20+ (or Bun).
 
 ```sh
-git clone <this-repository-url>
-cd <project>
+git clone https://github.com/wasiif/dhikr-delight.git
+cd dhikr-delight
 npm install
 npm run dev        # http://localhost:8080
 ```
