@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Play, RotateCcw } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
 import { ROUTINES, type Routine } from "@/lib/routine-data";
@@ -13,11 +13,7 @@ export default function DuasSection() {
       <p className="text-sm text-muted-foreground">{t.duasIntro}</p>
       {ROUTINES.map((routine) =>
         openId === routine.id ? (
-          <RoutineRunner
-            key={routine.id}
-            routine={routine}
-            onClose={() => setOpenId(null)}
-          />
+          <RoutineRunner key={routine.id} routine={routine} onClose={() => setOpenId(null)} />
         ) : (
           <button
             key={routine.id}
@@ -26,9 +22,7 @@ export default function DuasSection() {
             className="flex w-full items-center justify-between gap-4 rounded-3xl border border-border/70 bg-card/60 p-5 text-start shadow-sm transition-colors hover:bg-secondary/60"
           >
             <span className="min-w-0">
-              <span className="block text-lg font-semibold">
-                {routine.titles[lang]}
-              </span>
+              <span className="block text-lg font-semibold">{routine.titles[lang]}</span>
               <span className="mt-1 block text-xs text-muted-foreground">
                 {routine.windows[lang]} · {routine.steps.length}
               </span>
@@ -41,13 +35,7 @@ export default function DuasSection() {
   );
 }
 
-function RoutineRunner({
-  routine,
-  onClose,
-}: {
-  routine: Routine;
-  onClose: () => void;
-}) {
+function RoutineRunner({ routine, onClose }: { routine: Routine; onClose: () => void }) {
   const { t, lang, dispatch } = useDhikr();
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
@@ -93,9 +81,7 @@ function RoutineRunner({
           <p className="mt-3 text-sm font-medium" dir="ltr">
             {step.transliteration}
           </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {step.translations[lang]}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{step.translations[lang]}</p>
           <span className="mt-4 inline-block rounded-full border border-gold/40 px-3 py-1 text-xs text-gold">
             {t.repeat} × {step.count}
           </span>
@@ -115,7 +101,7 @@ function RoutineRunner({
                   },
                   target: step.count,
                 });
-                navigate({ to: "/" });
+                navigate("/");
               }}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >

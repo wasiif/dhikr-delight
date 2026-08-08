@@ -1,46 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { Download, Trash2 } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
 import { exportHistory } from "@/lib/export-history";
 
-const H_TITLE = "Dhikr History & Streaks — Dhikr Counter";
-const H_DESC =
-  "Review your dhikr sessions day by day, see today's and this week's totals, track your streak and export the full record as JSON or CSV.";
+export default function HistoryPage() {
+  const { state, dispatch, hydrated, t, locale, todayTotal, weekTotal, streak } = useDhikr();
 
-export const Route = createFileRoute("/history")({
-  head: () => ({
-    meta: [
-      { title: H_TITLE },
-      { name: "description", content: H_DESC },
-      { property: "og:title", content: H_TITLE },
-      { property: "og:description", content: H_DESC },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/history" },
-      { name: "twitter:title", content: H_TITLE },
-      { name: "twitter:description", content: H_DESC },
-    ],
-    links: [{ rel: "canonical", href: "/history" }],
-  }),
-  component: HistoryPage,
-});
-
-
-function HistoryPage() {
-  const { state, dispatch, hydrated, t, locale, todayTotal, weekTotal, streak } =
-    useDhikr();
-
-  const grouped = state.history.reduce<Record<string, typeof state.history>>(
-    (acc, session) => {
-      const date = new Date(session.completedAt).toLocaleDateString(locale, {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-      });
-      (acc[date] ||= []).push(session);
-      return acc;
-    },
-    {},
-  );
+  const grouped = state.history.reduce<Record<string, typeof state.history>>((acc, session) => {
+    const date = new Date(session.completedAt).toLocaleDateString(locale, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    });
+    (acc[date] ||= []).push(session);
+    return acc;
+  }, {});
 
   const stats = [
     { label: t.today, value: `${todayTotal}`, unit: t.totalCounts },
@@ -59,9 +32,7 @@ function HistoryPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
       <header>
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          {t.record}
-        </p>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t.record}</p>
         <h1 className="mt-2 text-3xl font-semibold">{t.sessionHistory}</h1>
       </header>
 
@@ -71,9 +42,7 @@ function HistoryPage() {
             key={s.label}
             className="rounded-2xl border border-border/70 bg-card/60 p-4 text-center shadow-sm"
           >
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              {s.label}
-            </p>
+            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{s.label}</p>
             <p className="mt-2 text-3xl font-semibold tabular-nums text-gold" dir="ltr">
               {s.value}
             </p>
@@ -119,9 +88,7 @@ function HistoryPage() {
       <div className="space-y-8">
         {Object.entries(grouped).map(([date, sessions]) => (
           <section key={date} className="space-y-3">
-            <h2 className="text-sm font-medium uppercase tracking-[0.2em] text-gold">
-              {date}
-            </h2>
+            <h2 className="text-sm font-medium uppercase tracking-[0.2em] text-gold">{date}</h2>
             {sessions.map((session) => (
               <article
                 key={session.id}
@@ -137,9 +104,7 @@ function HistoryPage() {
                     </p>
                   </div>
                   <div className="text-end">
-                    <p className="text-2xl font-semibold tabular-nums">
-                      {session.count}
-                    </p>
+                    <p className="text-2xl font-semibold tabular-nums">{session.count}</p>
                     <p className="text-xs text-muted-foreground">
                       {t.of} {session.target}
                     </p>

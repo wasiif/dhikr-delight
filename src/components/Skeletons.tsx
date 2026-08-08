@@ -14,10 +14,7 @@ export function TileSkeleton() {
 
 export function TileGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <ul
-      className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-      aria-hidden="true"
-    >
+    <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" aria-hidden="true">
       {Array.from({ length: count }).map((_, i) => (
         <li key={i}>
           <TileSkeleton />
@@ -42,10 +39,7 @@ export function ListSkeleton({ rows = 2 }: { rows?: number }) {
 
 export function CounterSkeleton() {
   return (
-    <div
-      className="mx-auto max-w-xl animate-pulse space-y-8 py-4"
-      aria-hidden="true"
-    >
+    <div className="mx-auto max-w-xl animate-pulse space-y-8 py-4" aria-hidden="true">
       <div className="flex flex-col items-center gap-3">
         <span className="h-3 w-28 rounded bg-muted/60" />
         <span className="h-9 w-56 rounded bg-muted/70" />

@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import { BookOpen, Search, Sparkles, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useDhikr } from "@/lib/dhikr-store";
 import { DEFAULT_DHIKRS, FATIMAH_ID } from "@/lib/dhikr-data";
 import { TASBIH_COLLECTION, tr, type TasbihItem } from "@/lib/tasbih-collection";
@@ -10,49 +10,9 @@ import { ListSkeleton, TileGridSkeleton } from "@/components/Skeletons";
 const NamesGrid = lazy(() => import("@/components/library/NamesGrid"));
 const DuasSection = lazy(() => import("@/components/library/DuasSection"));
 
-const LIB_TITLE = "Dhikr Library — Tasbihs, 99 Names of Allah & Duas";
-const LIB_DESC =
-  "Browse a complete dhikr library: named tasbihs with references, all 99 names of Allah (Asma-ul-Husna) with meanings, and guided morning and evening adhkar you can count.";
-
-export const Route = createFileRoute("/library")({
-  head: () => ({
-    meta: [
-      { title: LIB_TITLE },
-      { name: "description", content: LIB_DESC },
-      {
-        name: "keywords",
-        content:
-          "99 names of allah, asma ul husna, morning adhkar, evening adhkar, istighfar, durood ibrahim, ayat al kursi, kalima tayyibah",
-      },
-      { property: "og:title", content: LIB_TITLE },
-      { property: "og:description", content: LIB_DESC },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/library" },
-      { name: "twitter:title", content: LIB_TITLE },
-      { name: "twitter:description", content: LIB_DESC },
-    ],
-    links: [{ rel: "canonical", href: "/library" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-            { "@type": "ListItem", position: 2, name: "Library", item: "/library" },
-          ],
-        }),
-      },
-    ],
-  }),
-  component: LibraryPage,
-});
-
-
 type Tab = "tasbihs" | "names" | "duas";
 
-function LibraryPage() {
+export default function LibraryPage() {
   const { t, lang, state, dispatch } = useDhikr();
   const navigate = useNavigate();
   const [tab, setTab] = useState<Tab>("tasbihs");
@@ -60,7 +20,6 @@ function LibraryPage() {
   const [ready, setReady] = useState(false);
   const q = query.trim().toLowerCase();
 
-  // Paint the first tab immediately, then warm the heavier chunks in the background.
   useEffect(() => {
     setReady(true);
     const warm = () => {
@@ -68,22 +27,18 @@ function LibraryPage() {
       void import("@/components/library/DuasSection");
     };
     const w = window as unknown as {
-
       requestIdleCallback?: (cb: () => void) => number;
       cancelIdleCallback?: (h: number) => void;
       setTimeout: (cb: () => void, ms: number) => number;
       clearTimeout: (h: number) => void;
     };
     const useIdle = typeof w.requestIdleCallback === "function";
-    const handle = useIdle
-      ? w.requestIdleCallback!(warm)
-      : w.setTimeout(warm, 300);
+    const handle = useIdle ? w.requestIdleCallback!(warm) : w.setTimeout(warm, 300);
     return () => {
       if (useIdle) w.cancelIdleCallback?.(handle);
       else w.clearTimeout(handle);
     };
   }, []);
-
 
   const tasbihs = useMemo(() => {
     const extras: TasbihItem[] = DEFAULT_DHIKRS.filter(
@@ -127,19 +82,15 @@ function LibraryPage() {
         target: item.target,
       });
     }
-    navigate({ to: "/" });
+    navigate("/");
   }
 
   return (
     <div className="space-y-8 animate-fade-in">
       <header>
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          {t.dhikrLibrary}
-        </p>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t.dhikrLibrary}</p>
         <h1 className="mt-2 text-3xl font-semibold">{t.libraryHeading}</h1>
-        <p className="mt-2 max-w-prose text-sm text-muted-foreground">
-          {t.libraryLead}
-        </p>
+        <p className="mt-2 max-w-prose text-sm text-muted-foreground">{t.libraryLead}</p>
       </header>
 
       <div className="relative">
@@ -157,15 +108,10 @@ function LibraryPage() {
         />
       </div>
 
-      <div
-        role="tablist"
-        aria-label={t.libraryHeading}
-        className="flex gap-2 overflow-x-auto pb-1"
-      >
+      <div role="tablist" aria-label={t.libraryHeading} className="flex gap-2 overflow-x-auto pb-1">
         {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
-            role="tab"
             type="button"
             aria-selected={tab === id}
             onClick={() => setTab(id)}
@@ -233,9 +179,7 @@ function LibraryPage() {
           {t.verseArabic}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">{t.verseText}</p>
-        <footer className="mt-2 text-xs uppercase tracking-[0.2em] text-gold">
-          {t.verseRef}
-        </footer>
+        <footer className="mt-2 text-xs uppercase tracking-[0.2em] text-gold">{t.verseRef}</footer>
       </blockquote>
     </div>
   );

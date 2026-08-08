@@ -142,10 +142,7 @@ export const TASBIH_COLLECTION: TasbihItem[] = [
   },
 ];
 
-export function tr<T extends Record<Language, string>>(
-  map: T | undefined,
-  lang: Language,
-): string {
+export function tr<T extends Record<Language, string>>(map: T | undefined, lang: Language): string {
   if (!map) return "";
   return map[lang] ?? map.en ?? "";
 }

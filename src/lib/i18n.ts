@@ -80,8 +80,7 @@ const enBase: BaseDict = {
   record: "Record",
   sessionHistory: "Session history",
   clear: "Clear",
-  emptyHistory:
-    "No sessions saved yet. Complete a session on the counter and it will appear here.",
+  emptyHistory: "No sessions saved yet. Complete a session on the counter and it will appear here.",
   of: "of",
   minutes: "min",
 
@@ -163,8 +162,7 @@ const urBase: BaseDict = {
   record: "ریکارڈ",
   sessionHistory: "سیشن کی تاریخ",
   clear: "صاف کریں",
-  emptyHistory:
-    "ابھی کوئی سیشن محفوظ نہیں۔ کاؤنٹر پر سیشن مکمل کریں، یہاں نظر آئے گا۔",
+  emptyHistory: "ابھی کوئی سیشن محفوظ نہیں۔ کاؤنٹر پر سیشن مکمل کریں، یہاں نظر آئے گا۔",
   of: "میں سے",
   minutes: "منٹ",
 
@@ -191,8 +189,7 @@ export const TRANSLATIONS: Record<Language, Dict> = {
   ur: { ...urBase, ...EXTRA.ur, ...POLISH.ur, ...LIBRARY.ur },
 };
 
-export const getDict = (lang: Language): Dict =>
-  TRANSLATIONS[lang] ?? TRANSLATIONS.en;
+export const getDict = (lang: Language): Dict => TRANSLATIONS[lang] ?? TRANSLATIONS.en;
 
 export const LOCALES: Record<Language, string> = {
   en: "en-US",

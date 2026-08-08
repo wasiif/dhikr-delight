@@ -25,8 +25,7 @@ export const LIBRARY: Record<Language, LibraryDict> = {
     reciteOnce: "Recite once",
     reference: "Reference",
     openCounter: "Open counter",
-    duasIntro:
-      "Guided routines that sequence through each dhikr with its count.",
+    duasIntro: "Guided routines that sequence through each dhikr with its count.",
     libraryHeading: "Library",
     libraryLead:
       "Everything to count or read, in one place — tasbihs, the 99 names, and guided adhkar.",

@@ -33,15 +33,7 @@ export function exportHistory(history: Session[], format: "json" | "csv") {
   }));
 
   if (format === "csv") {
-    const header = [
-      "Phrase",
-      "Arabic",
-      "Count",
-      "Target",
-      "Note",
-      "Finished At",
-      "Duration (min)",
-    ];
+    const header = ["Phrase", "Arabic", "Count", "Target", "Note", "Finished At", "Duration (min)"];
     const q = (v: string) => `"${(v ?? "").replace(/"/g, '""')}"`;
     const body = rows.map((r) =>
       [

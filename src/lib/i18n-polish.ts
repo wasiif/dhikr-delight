@@ -87,7 +87,8 @@ export const POLISH: Record<Language, PolishDict> = {
       "Dhikr is the remembrance of Allah — a quiet, steady practice of the heart. This app is only a simple aid for counting; the intention and sincerity are yours. Arabic texts follow standard, widely accepted wordings.",
     credits: "Built with care. Fonts: Amiri, Noto Naskh Arabic, Noto Nastaliq Urdu.",
     textSize: "Text size",
-    aboutFeedback: "Found a mistake in a text or reference, or have a suggestion? Please reach out — corrections are welcome and appreciated.",
+    aboutFeedback:
+      "Found a mistake in a text or reference, or have a suggestion? Please reach out — corrections are welcome and appreciated.",
     developer: "Developer",
     viewGithub: "github.com/wasiif",
     splashTagline: "A calm digital tasbih",
@@ -124,8 +125,7 @@ export const POLISH: Record<Language, PolishDict> = {
     fontPreviewLabel: "معاينة",
     dangerZone: "البيانات",
     resetAllData: "حذف جميع البيانات",
-    resetAllBody:
-      "سيتم مسح السجل والأذكار المخصصة والتفضيلات والعدّ الحالي. لا يمكن التراجع.",
+    resetAllBody: "سيتم مسح السجل والأذكار المخصصة والتفضيلات والعدّ الحالي. لا يمكن التراجع.",
     aboutTitle: "عن التطبيق",
     aboutBody:
       "الذكر هو تذكّر الله، عمل قلبي هادئ ومستمر. هذا التطبيق مجرد وسيلة بسيطة للعدّ، والنية والإخلاص لك. النصوص العربية وفق الصيغ المعتمدة المشهورة.",
@@ -168,14 +168,14 @@ export const POLISH: Record<Language, PolishDict> = {
     fontPreviewLabel: "نمونہ",
     dangerZone: "ڈیٹا",
     resetAllData: "تمام ڈیٹا حذف کریں",
-    resetAllBody:
-      "اس سے تاریخ، اپنے اذکار، ترجیحات اور موجودہ شمار مٹ جائیں گے۔ واپسی ممکن نہیں۔",
+    resetAllBody: "اس سے تاریخ، اپنے اذکار، ترجیحات اور موجودہ شمار مٹ جائیں گے۔ واپسی ممکن نہیں۔",
     aboutTitle: "تعارف",
     aboutBody:
       "ذکر اللہ کی یاد ہے — دل کا پرسکون اور مستقل عمل۔ یہ ایپ صرف شمار کے لیے ایک سادہ مددگار ہے؛ نیت اور اخلاص آپ کا ہے۔ عربی متون معروف اور مستند الفاظ کے مطابق ہیں۔",
     credits: "محبت سے بنایا گیا۔ فونٹس: امیری، نوٹو نسخ، نوٹو نستعلیق۔",
     textSize: "متن کا سائز",
-    aboutFeedback: "اگر کسی متن یا حوالے میں غلطی نظر آئے یا کوئی تجویز ہو تو رابطہ کریں — اصلاح خوش آئند ہے۔",
+    aboutFeedback:
+      "اگر کسی متن یا حوالے میں غلطی نظر آئے یا کوئی تجویز ہو تو رابطہ کریں — اصلاح خوش آئند ہے۔",
     developer: "ڈیولپر",
     viewGithub: "github.com/wasiif",
     splashTagline: "ایک پرسکون ڈیجیٹل تسبیح",

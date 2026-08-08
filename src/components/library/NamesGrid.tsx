@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
 import { ASMA_UL_HUSNA, nameMeaning } from "@/lib/asma-data";
 import { useDhikr } from "@/lib/dhikr-store";
 import { LibraryTile } from "./LibraryTile";
@@ -50,7 +50,7 @@ export default function NamesGrid({ query }: { query: string }) {
                     defaultTarget: 33,
                   },
                 });
-                navigate({ to: "/" });
+                navigate("/");
               }}
             />
           </li>

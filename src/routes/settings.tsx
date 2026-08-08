@@ -1,33 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Plus, X, Sun, Moon, Trash2, Heart, Github, MessageCircle } from "lucide-react";
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-const S_TITLE = "Settings — Customize Your Tasbih Counter";
-const S_DESC =
-  "Set your language, light or night theme, app text size and default target, add custom adhkar, and tune sound and haptic feedback.";
-
-export const Route = createFileRoute("/settings")({
-  head: () => ({
-    meta: [
-      { title: S_TITLE },
-      { name: "description", content: S_DESC },
-      { property: "og:title", content: S_TITLE },
-      { property: "og:description", content: S_DESC },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/settings" },
-      { name: "twitter:title", content: S_TITLE },
-      { name: "twitter:description", content: S_DESC },
-    ],
-    links: [{ rel: "canonical", href: "/settings" }],
-  }),
-  component: SettingsPage,
-});
-
-
-function SettingsPage() {
+export default function SettingsPage() {
   const { state, dispatch, phrases, t, lang } = useDhikr();
   const [arabic, setArabic] = useState("");
   const [name, setName] = useState("");
@@ -66,15 +43,12 @@ function SettingsPage() {
     { dark: true, label: t.nightMode, Icon: Moon },
   ];
 
-  const sectionTitle =
-    "text-sm font-medium uppercase tracking-[0.2em] text-gold";
+  const sectionTitle = "text-sm font-medium uppercase tracking-[0.2em] text-gold";
 
   return (
     <div className="mx-auto max-w-2xl space-y-10 animate-fade-in">
       <header>
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
-          {t.settings}
-        </p>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t.settings}</p>
         <h1 className="mt-2 text-3xl font-semibold">{t.personalize}</h1>
       </header>
 
@@ -85,11 +59,7 @@ function SettingsPage() {
 
       <section className="space-y-3">
         <h2 className={sectionTitle}>{t.theme}</h2>
-        <div
-          className="grid grid-cols-2 gap-3"
-          role="radiogroup"
-          aria-label={t.theme}
-        >
+        <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label={t.theme}>
           {themes.map(({ dark, label, Icon }) => {
             const selected = state.darkMode === dark;
             return (
@@ -125,9 +95,7 @@ function SettingsPage() {
               step={0.05}
               value={Math.min(1.25, Math.max(0.9, state.arabicScale))}
               aria-label={t.textSize}
-              onChange={(e) =>
-                dispatch({ type: "setArabicScale", scale: Number(e.target.value) })
-              }
+              onChange={(e) => dispatch({ type: "setArabicScale", scale: Number(e.target.value) })}
               className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-[var(--gold)]"
             />
             <span className="text-base text-muted-foreground">{t.fontLarge}</span>
@@ -148,9 +116,7 @@ function SettingsPage() {
           min={1}
           value={state.target}
           aria-label={t.targetRepetitions}
-          onChange={(e) =>
-            dispatch({ type: "setTarget", target: Number(e.target.value) })
-          }
+          onChange={(e) => dispatch({ type: "setTarget", target: Number(e.target.value) })}
           dir="ltr"
           className="min-h-11 w-32 rounded-xl border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
         />
@@ -260,81 +226,73 @@ function SettingsPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className={sectionTitle}>{t.dangerZone}</h2>
-        {confirmWipe ? (
-          <div className="rounded-2xl border border-destructive/40 bg-card/60 p-5 animate-scale-in">
-            <p className="font-medium">{t.resetAllData}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{t.resetAllBody}</p>
-            <div className="mt-4 flex flex-wrap gap-2">
+        <h2 className={sectionTitle}>{t.about}</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl border border-border/70 bg-card/60 p-5 text-start">
+            <p className="text-sm text-muted-foreground">{t.feedbackLabel}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => setConfirmWipe(false)}
-                className="min-h-11 rounded-full border border-border px-5 text-sm transition-colors hover:bg-secondary"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm transition-colors hover:bg-secondary"
               >
-                {t.cancel}
+                <Github className="size-4" aria-hidden="true" /> GitHub
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  dispatch({ type: "resetAll" });
-                  setConfirmWipe(false);
-                }}
-                className="min-h-11 rounded-full bg-destructive px-5 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm transition-colors hover:bg-secondary"
               >
-                {t.confirm}
+                <MessageCircle className="size-4" aria-hidden="true" /> Contact
               </button>
             </div>
           </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setConfirmWipe(true)}
-            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-destructive/40 px-5 text-sm text-destructive transition-colors hover:bg-destructive/10"
-          >
-            <Trash2 className="size-4" aria-hidden="true" />
-            {t.resetAllData}
-          </button>
-        )}
-      </section>
-
-      <section className="space-y-3">
-        <h2 className={sectionTitle}>{t.aboutTitle}</h2>
-        <div className="rounded-2xl border border-border/70 bg-card/60 p-5">
-          <p className="font-arabic text-xl text-gold" dir="rtl">
-            {t.verseArabic}
-          </p>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            {t.aboutBody}
-          </p>
-
-          <div className="mt-5 rounded-xl border border-gold/30 bg-gold/5 p-4">
-            <p className="flex items-start gap-2 text-sm leading-relaxed">
-              <MessageCircle className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
-              <span>{t.aboutFeedback}</span>
-            </p>
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
-            <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-              {t.developer}
-            </span>
-            <a
-              href="https://github.com/wasiif"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-gold/50 px-4 text-sm text-gold transition-colors hover:bg-gold/10"
+          <div className="rounded-2xl border border-border/70 bg-card/60 p-5 text-start">
+            <p className="text-sm text-muted-foreground">{t.supportLabel}</p>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
             >
-              <Github className="size-4" aria-hidden="true" />
-              {t.viewGithub}
-            </a>
+              <Heart className="size-4" aria-hidden="true" /> {t.support}
+            </button>
           </div>
-
-          <p className="mt-4 inline-flex items-center gap-2 text-xs text-muted-foreground">
-            <Heart className="size-3.5 text-gold" aria-hidden="true" />
-            {t.credits}
-          </p>
         </div>
       </section>
+
+      <div className="rounded-2xl border border-destructive/40 bg-card/60 p-5 text-center">
+        <p className="text-sm text-muted-foreground">{t.clearDataDescription}</p>
+        <button
+          type="button"
+          onClick={() => setConfirmWipe(true)}
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-destructive/40 px-5 text-sm text-destructive transition-colors hover:bg-destructive/10"
+        >
+          <Trash2 className="size-4" aria-hidden="true" /> {t.clearData}
+        </button>
+      </div>
+
+      {confirmWipe ? (
+        <div className="rounded-2xl border border-destructive/40 bg-card/80 p-5 text-center animate-scale-in">
+          <p className="font-medium">{t.confirmWipe}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t.confirmWipeBody}</p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setConfirmWipe(false)}
+              className="min-h-11 rounded-full border border-border px-5 text-sm transition-colors hover:bg-secondary"
+            >
+              {t.cancel}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({ type: "resetAll" });
+                setConfirmWipe(false);
+              }}
+              className="min-h-11 rounded-full bg-destructive px-5 text-sm font-medium text-destructive-foreground transition-opacity hover:opacity-90"
+            >
+              {t.confirm}
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

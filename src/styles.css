@@ -67,7 +67,6 @@
   --font-display: "Cormorant Garamond", serif;
   --font-arabic-ui: "Noto Naskh Arabic", "Amiri", serif;
   --font-urdu: "Noto Nastaliq Urdu", "Noto Naskh Arabic", serif;
-
 }
 
 :root {
@@ -238,7 +237,6 @@
   }
 }
 
-
 /* Eight-point star (khatim) lattice — low opacity, never behind body text directly. */
 @utility girih {
   background-image:
@@ -345,5 +343,3 @@
     animation-iteration-count: 1 !important;
   }
 }
-
-

@@ -10,16 +10,16 @@ Built on TanStack Start.
 
 ## Features
 
-| Area | What it does |
-| --- | --- |
-| Counter | Tap or swipe the gold progress dial, live count/target, gentle pulse + shimmer on milestones |
-| Tasbih Fatimah | Auto-advances SubhanAllah ×33 → Alhamdulillah ×33 → Allahu Akbar ×34 (100 total) |
-| Library | One screen, three tabs: Tasbihs, 99 Names of Allah, Duas — searchable responsive tile grid |
-| Adhkar routines | Guided morning & evening sequences with per-item counts |
-| History | Sessions grouped by day, today/week totals, streak, JSON & CSV export |
-| Settings | Language, light/night theme, global text-size slider, sound & haptics, custom adhkar, reset all data |
-| i18n | English and Urdu, with full RTL layout mirroring and per-language fonts |
-| Storage | 100% local (`localStorage`) — no account, no backend, no tracking |
+| Area            | What it does                                                                                         |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| Counter         | Tap or swipe the gold progress dial, live count/target, gentle pulse + shimmer on milestones         |
+| Tasbih Fatimah  | Auto-advances SubhanAllah ×33 → Alhamdulillah ×33 → Allahu Akbar ×34 (100 total)                     |
+| Library         | One screen, three tabs: Tasbihs, 99 Names of Allah, Duas — searchable responsive tile grid           |
+| Adhkar routines | Guided morning & evening sequences with per-item counts                                              |
+| History         | Sessions grouped by day, today/week totals, streak, JSON & CSV export                                |
+| Settings        | Language, light/night theme, global text-size slider, sound & haptics, custom adhkar, reset all data |
+| i18n            | English and Urdu, with full RTL layout mirroring and per-language fonts                              |
+| Storage         | 100% local (`localStorage`) — no account, no backend, no tracking                                    |
 
 ## Tech stack
 
@@ -43,13 +43,13 @@ npm run dev        # http://localhost:8080
 
 Scripts:
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start the dev server with HMR |
-| `npm run build` | Production build |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | ESLint |
-| `npm run format` | Prettier |
+| Command           | Purpose                       |
+| ----------------- | ----------------------------- |
+| `npm run dev`     | Start the dev server with HMR |
+| `npm run build`   | Production build              |
+| `npm run preview` | Preview the production build  |
+| `npm run lint`    | ESLint                        |
+| `npm run format`  | Prettier                      |
 
 ## Project structure
 

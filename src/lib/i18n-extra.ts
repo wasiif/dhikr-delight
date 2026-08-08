@@ -100,8 +100,7 @@ export const EXTRA: Record<Language, ExtraDict> = {
     restart: "ابدأ من جديد",
     repeat: "كرر",
     fatimahTitle: "تسبيح فاطمة",
-    fatimahDesc:
-      "٣٣ سبحان الله، ثم ٣٣ الحمد لله، ثم ٣٤ الله أكبر — مئة تسبيحة كاملة.",
+    fatimahDesc: "٣٣ سبحان الله، ثم ٣٣ الحمد لله، ثم ٣٤ الله أكبر — مئة تسبيحة كاملة.",
     fatimahStage: (a, b) => `الجزء ${a} من ${b}`,
     fatimahComplete: "اكتمل تسبيح فاطمة — مئة تسبيحة.",
     fatimahTotal: "المجموع ١٠٠",

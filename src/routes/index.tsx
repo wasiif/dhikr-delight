@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Minus, Plus, RotateCcw, Sparkles } from "lucide-react";
 import { TasbihDial } from "@/components/TasbihDial";
@@ -6,90 +5,6 @@ import { CounterSkeleton } from "@/components/Skeletons";
 
 import { useDhikr } from "@/lib/dhikr-store";
 import { meaning } from "@/lib/dhikr-data";
-
-const HOME_TITLE = "Digital Tasbih Counter — Online Dhikr Counter";
-const HOME_DESC =
-  "Free digital tasbih counter for daily dhikr: tap or swipe to count, set targets like 33, 99 and 100, follow Tasbih Fatimah, and track streaks — works offline in your browser.";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: HOME_TITLE },
-      { name: "description", content: HOME_DESC },
-      {
-        name: "keywords",
-        content:
-          "tasbih counter, digital tasbih, dhikr counter, online tasbeeh, misbaha, zikr counter, tasbih fatimah, 99 names of allah",
-      },
-      { property: "og:title", content: HOME_TITLE },
-      { property: "og:description", content: HOME_DESC },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { name: "twitter:title", content: HOME_TITLE },
-      { name: "twitter:description", content: HOME_DESC },
-    ],
-    links: [{ rel: "canonical", href: "/" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "Dhikr Counter — Digital Tasbih",
-          applicationCategory: "LifestyleApplication",
-          operatingSystem: "Any (web browser)",
-          browserRequirements: "Requires JavaScript",
-          description: HOME_DESC,
-          inLanguage: ["en", "ur"],
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-          featureList: [
-            "Tap and swipe dhikr counting",
-            "Custom targets (33, 99, 100, 1000)",
-            "Tasbih Fatimah sequence",
-            "99 Names of Allah",
-            "Morning and evening adhkar",
-            "Session history and streaks",
-          ],
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: [
-            {
-              "@type": "Question",
-              name: "What is a digital tasbih counter?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "A digital tasbih is an online version of prayer beads (misbaha). You tap the dial to count each dhikr, and the app tracks your progress toward a target such as 33, 99 or 100.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "What is Tasbih Fatimah?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Tasbih Fatimah is SubhanAllah 33 times, Alhamdulillah 33 times and Allahu Akbar 34 times — 100 in total. The counter advances through each phrase automatically.",
-              },
-            },
-            {
-              "@type": "Question",
-              name: "Does the dhikr counter work offline?",
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: "Yes. Counts, targets and history are stored locally in your browser, so no account is needed and your data stays on your device.",
-              },
-            },
-          ],
-        }),
-      },
-    ],
-  }),
-  component: CounterPage,
-});
-
 
 function CounterPage() {
   const {
@@ -112,7 +27,6 @@ function CounterPage() {
     return <CounterSkeleton />;
   }
 
-
   return (
     <div className="mx-auto max-w-xl space-y-8 animate-fade-in">
       <header className="text-center">
@@ -125,9 +39,7 @@ function CounterPage() {
         <h1 className="mt-2 text-2xl font-semibold" dir="ltr">
           {active.transliteration}
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {meaning(active, lang)}
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{meaning(active, lang)}</p>
       </header>
 
       {isFatimah ? (
@@ -167,9 +79,7 @@ function CounterPage() {
         <div className="completion-glow rounded-2xl border border-gold/40 bg-gold/10 p-5 text-center animate-scale-in">
           <Sparkles className="mx-auto size-5 text-gold" aria-hidden="true" />
           <p className="mt-2 text-lg font-semibold text-gold">{t.tasbihComplete}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {t.tasbihCompleteNote}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{t.tasbihCompleteNote}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <button
               type="button"
@@ -222,9 +132,7 @@ function CounterPage() {
       {confirmReset ? (
         <div className="rounded-2xl border border-destructive/40 bg-card/80 p-5 text-center animate-scale-in">
           <p className="font-medium">{t.confirmReset}</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {t.confirmResetBody(state.count)}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{t.confirmResetBody(state.count)}</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <button
               type="button"
@@ -247,7 +155,6 @@ function CounterPage() {
         </div>
       ) : null}
 
-
       <blockquote className="text-center">
         <p className="font-arabic text-xl leading-loose text-gold" dir="rtl">
           {t.verseArabic}
@@ -261,3 +168,4 @@ function CounterPage() {
   );
 }
 
+export default CounterPage;

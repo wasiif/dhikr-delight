@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
 import {
   DEFAULT_DHIKRS,
   DEFAULT_TARGET,
@@ -16,8 +9,7 @@ import {
 } from "./dhikr-data";
 import { getDict, isRtl, LOCALES, type Language } from "./i18n";
 import type { Session } from "./export-history";
-
-const STORAGE_KEY = "dhikr-counter-app-state";
+import { STORAGE_KEY, computeStreak, playChime } from "./dhikr-store-utils";
 
 export type DhikrState = {
   count: number;
@@ -77,7 +69,6 @@ type Action =
       type: "toggle";
       key: "soundEnabled" | "vibrationEnabled" | "autoReset" | "darkMode";
     };
-
 
 function reducer(state: DhikrState, action: Action): DhikrState {
   switch (action.type) {
@@ -145,9 +136,7 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       );
       return {
         ...state,
-        customPhrases: known
-          ? state.customPhrases
-          : [...state.customPhrases, action.dhikr],
+        customPhrases: known ? state.customPhrases : [...state.customPhrases, action.dhikr],
         selectedId: action.dhikr.id,
         fatimahStage: 0,
         count: 0,
@@ -161,8 +150,7 @@ function reducer(state: DhikrState, action: Action): DhikrState {
       return {
         ...state,
         customPhrases: state.customPhrases.filter((p) => p.id !== action.id),
-        selectedId:
-          state.selectedId === action.id ? DEFAULT_DHIKRS[0].id : state.selectedId,
+        selectedId: state.selectedId === action.id ? DEFAULT_DHIKRS[0].id : state.selectedId,
       };
     case "setNote":
       return { ...state, note: action.note };
@@ -214,24 +202,6 @@ function reducer(state: DhikrState, action: Action): DhikrState {
   }
 }
 
-function computeStreak(history: Session[]): number {
-  if (!history.length) return 0;
-  const days = new Set(
-    history.map((s) => new Date(s.completedAt).toDateString()),
-  );
-  let streak = 0;
-  const cursor = new Date();
-  if (!days.has(cursor.toDateString())) {
-    cursor.setDate(cursor.getDate() - 1);
-    if (!days.has(cursor.toDateString())) return 0;
-  }
-  while (days.has(cursor.toDateString())) {
-    streak += 1;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  return streak;
-}
-
 type DhikrContextValue = {
   state: DhikrState;
   dispatch: React.Dispatch<Action>;
@@ -253,7 +223,6 @@ type DhikrContextValue = {
   locale: string;
   setLanguage: (language: Language) => void;
 };
-
 
 const DhikrContext = createContext<DhikrContextValue | null>(null);
 
@@ -288,10 +257,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
   }, [state.darkMode]);
 
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--app-scale",
-      String(state.arabicScale),
-    );
+    document.documentElement.style.setProperty("--app-scale", String(state.arabicScale));
   }, [state.arabicScale]);
 
   const rtl = isRtl(state.language);
@@ -301,24 +267,16 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = rtl ? "rtl" : "ltr";
   }, [state.language, rtl]);
 
-  const phrases = useMemo(
-    () => [...DEFAULT_DHIKRS, ...state.customPhrases],
-    [state.customPhrases],
-  );
+  const phrases = useMemo(() => [...DEFAULT_DHIKRS, ...state.customPhrases], [state.customPhrases]);
   const isFatimah = state.selectedId === FATIMAH_ID;
   const active = isFatimah
     ? FATIMAH_STEPS[Math.min(state.fatimahStage, FATIMAH_STEPS.length - 1)]
     : (phrases.find((p) => p.id === state.selectedId) ?? DEFAULT_DHIKRS[0]);
-  const progress =
-    state.target > 0 ? Math.min((state.count / state.target) * 100, 100) : 0;
+  const progress = state.target > 0 ? Math.min((state.count / state.target) * 100, 100) : 0;
   const streak = useMemo(() => computeStreak(state.history), [state.history]);
   const { todayTotal, weekTotal } = useMemo(() => {
     const now = new Date();
-    const startOfDay = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate(),
-    ).getTime();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
     const startOfWeek = startOfDay - 6 * 24 * 60 * 60 * 1000;
     return state.history.reduce(
       (acc, s) => {
@@ -357,11 +315,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
       const next = state.count + by;
       if (isFatimah) {
         if (next >= state.target) {
-          if (
-            state.vibrationEnabled &&
-            typeof navigator !== "undefined" &&
-            navigator.vibrate
-          ) {
+          if (state.vibrationEnabled && typeof navigator !== "undefined" && navigator.vibrate) {
             navigator.vibrate([18, 60, 40]);
           }
           dispatch({ type: "increment", by });
@@ -387,31 +341,7 @@ export function DhikrProvider({ children }: { children: ReactNode }) {
     },
   };
 
-
   return <DhikrContext.Provider value={value}>{children}</DhikrContext.Provider>;
-}
-
-let audioCtx: AudioContext | null = null;
-function playChime() {
-  try {
-    const Ctor =
-      window.AudioContext ??
-      (window as unknown as { webkitAudioContext?: typeof AudioContext })
-        .webkitAudioContext;
-    if (!Ctor) return;
-    audioCtx = audioCtx ?? new Ctor();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.frequency.value = 660;
-    osc.type = "sine";
-    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.18);
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.2);
-  } catch {
-    /* audio unavailable */
-  }
 }
 
 export function useDhikr() {

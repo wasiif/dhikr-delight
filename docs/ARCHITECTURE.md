@@ -58,12 +58,12 @@ phrase is current.
 
 Plain, typed TypeScript modules — no database, no network:
 
-| File | Contents |
-| --- | --- |
-| `dhikr-data.ts` | Default adhkar + Tasbih Fatimah steps |
+| File                   | Contents                                                                |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `dhikr-data.ts`        | Default adhkar + Tasbih Fatimah steps                                   |
 | `tasbih-collection.ts` | Named tasbihs: Arabic, transliteration, translations, target, reference |
-| `asma-data.ts` | The 99 Names with transliteration and meaning |
-| `routine-data.ts` | Morning & evening adhkar sequences |
+| `asma-data.ts`         | The 99 Names with transliteration and meaning                           |
+| `routine-data.ts`      | Morning & evening adhkar sequences                                      |
 
 Translations for a data item live on the item itself (`translations: { en, ur }`) and are
 resolved with the `tr()` helper; UI strings live in the `i18n*.ts` dictionaries.
